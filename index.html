@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mentors Connect</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" href="images/favicon.png" type="image/x-icon">
+    <!-- google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <script src="script.js"></script>
+    <script src="https://kit.fontawesome.com/5dbdfc7f6d.js" crossorigin="anonymous"></script>
+    <script src="https://app.wotnot.io/chat-widget/3KbFVTcMxGj713234477355772aBpD16.js" defer></script>
+</head>
+<body>
+   
+    <div class="container">
+        <div class="nav">
+            <div class="left">
+                <nav>
+                    <ul>
+                        <li><img src="images/MAIN_LOGO_MENTOR_CONNECT.jpg" alt="logo" id="logo"></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="right">
+                <nav>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">About</a></li>
+                        <li><a href="#">Become a Mentor</a></li>
+                        <li><a href="#">Find a Mentor</a></li>
+                        <li><a href="#">Book a Demo</a></li>
+                        <div class="dropdown">
+                            <button class="dropbtn">Login/Signup</button>
+                            <div class="dropdown-content">
+                                <div class="tabs">
+                                    <div class="tab active" onclick="openTab('mentee')">Mentee</div>
+                                    <div class="tab" onclick="openTab('mentor')">Mentor</div>
+                                </div>
+                                <div id="mentee" class="tab-content">
+                                    <form>
+                                        <input type="text" placeholder="Email or username" name="username" required>
+                                        <input type="password" placeholder="Password" name="password" required>
+                                        <button type="submit">Log in</button>
+                                    </form>
+                                    <div class="or-divider">Or</div>
+                                    <div class="google-login">
+                                        <i class="fa-brands fa-google"></i>
+                                        Log in with Google
+                                    </div>
+                                    <a href="#">Forgot password?</a>
+                                    <a href="#">Sign up as a mentee</a>
+                                </div>
+                                <div id="mentor" class="tab-content" style="display:none;">
+                                    <form>
+                                        <input type="text" placeholder="Email or username" name="username" required>
+                                        <input type="password" placeholder="Password" name="password" required>
+                                        <button type="submit">Log in</button>
+                                    </form>
+                                    <div class="or-divider">Or</div>
+                                    <div class="google-login">
+                                        <i class="fa-brands fa-google"></i>
+                                        Log in with Google
+                                    </div>
+                                    <a href="#">Forgot password?</a>
+                                    <a href="#">Apply to be a mentor</a>
+                                </div>
+                            </div>
+                        </div>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        <div class="heading">
+                <div class="headline">
+                    <p>
+                        "Guiding you to success through <br><span>Mentoring</span> "
+                        </p>
+                </div>
+                <div class="rightboxheading">
+                    <img src="images/Mentorteach-removebg-preview.png" alt="">
+                </div>
+            </div>
+        </div>
+        <div class="slider-container">
+            <p1>Top Mentors</p1>
+            <div class="slider">
+                <div class="mentor-card">
+                    <div class="card-header">
+                        <div class="available-status">Available</div>
+                        <img src="images/image1.jpg" alt="Mentor Photo">
+                        <div class="trophy-icon">🏆</div>
+                    </div>
+                    <div class="card-body">
+                        <h2>Ruchika Sharma<span class="rating">⭐ 4.8</span></h2>
+                        <p>Asst. manager EY GDS | Ex-Deloitte (M&A Strategy) | MDI...</p>
+                        <button class="profile-button">View Profile</button>
+                    </div>
+                </div>
+             
+                <div class="mentor-card">
+                    <div class="card-header">
+                        <div class="available-status">Available</div>
+                        <img src="images/image3.jpg" alt="Mentor Photo">
+                        <div class="trophy-icon">🏆</div>
+                    </div>
+                    <div class="card-body">
+                        <h2>Kavita <span class="rating">⭐ 4.7</span></h2>
+                        <p>Senior Developer | Ex-Google | MIT Alum...</p>
+                        <button class="profile-button">View Profile</button>
+                    </div>
+                </div>
+                <!-- Add more cards here -->
+                <div class="mentor-card">
+                    <div class="card-header">
+                        <div class="available-status">Available</div>
+                        <img src="images/image1.jpg" alt ="Mentor Photo">
+                        <div class="trophy-icon">🏆</div>
+                    </div>
+                    <div class="card-body">
+                        <h2>Shreya<span class="rating">⭐ 4.9</span></h2>
+                        <p>Software Developer | Microsoft | NIET Alum...</p>
+                        <button class="profile-button">View Profile</button>
+                    </div>
+                </div>
+                <div class="mentor-card">
+                    <div class="card-header">
+                        <div class="available-status">Available</div>
+                        <img src="images/akshaypic.jpg" alt="Mentor Photo">
+                        <div class="trophy-icon">🏆</div>
+                    </div>
+                    <div class="card-body">
+                        <h2>Akshay<span class="rating">⭐ 4.6</span></h2>
+                        <p>AUTO-CAD | Larsen&Toubro | NIET Alum...</p>
+                        <button class="profile-button">View Profile</button>
+                    </div>
+                </div>
+                <div class="mentor-card">
+                    <div class="card-header">
+                        <div class="available-status">Available</div>
+                        <img src="images/image3.jpg" alt="Mentor Photo">
+                        <div class="trophy-icon">🏆</div>
+                    </div>
+                    <div class="card-body">
+                        <h2>Monika<span class="rating">⭐ 4.9</span></h2>
+                        <p>Senior Developer | Ex-Google | MIT Alum...</p>
+                        <button class="profile-button">View Profile</button>
+                    </div>
+                </div>
+                <div class="mentor-card">
+                    <div class="card-header">
+                        <div class="available-status">Available</div>
+                        <img src="images/image1.jpg" alt="Mentor Photo">
+                        <div class="trophy-icon">🏆</div>
+                    </div>
+                    <div class="card-body">
+                        <h2>Harshita<span class="rating">⭐ 4.9</span></h2>
+                        <p>Senior Developer | Ex-Google | MIT Alum...</p>
+                        <button class="profile-button">View Profile</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Navigation Buttons -->
+        <div class="slider-nav">
+            <button class="prev">◀</button>
+            <button class="next">▶</button>
+        </div>
+        
+        <section class="what-we-offer">
+            <h2>What We Offer</h2>
+            <div class="offer-container">
+                <div class="offer-box">
+                    <img src="https://via.placeholder.com/150" alt="1 on 1 Mentoring">
+                    <p>1 on 1 Mentoring</p>
+                </div>
+                <div class="offer-box">
+                    <img src="https://via.placeholder.com/150" alt="Expert Guidance">
+                    <p>Expert Guidance</p>
+                </div>
+                <div class="offer-box">
+                    <img src="https://via.placeholder.com/150" alt="Find Your Path">
+                    <p>Find Your Path</p>
+                </div>
+                <div class="offer-box">
+                    <img src="https://via.placeholder.com/150" alt="Gain Skills">
+                    <p>Gain Skills</p>
+                </div>
+            </div>
+        </section>   
+
+        <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stories Section</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Stories Section -->
+    <section class="stories-section">
+        <div class="container">
+            <h2>Success Stories</h2>
+            <div class="filters">
+                <button>Non tech to tech</button>
+                <button>Service to product</button>
+                <button>Tier 2/3 colleges</button>
+                <button>Job Bootcamp</button>
+                <button>Upskilling Courses</button>
+            </div>
+            <div class="stories-container">
+                <div class="story-card">
+                    <div class="story-header">
+                        <img src="https://via.placeholder.com/50" alt="User 1">
+                        <h3>Twisam</h3>
+                        <p>Full Stack Developer · Cogent e Private ltd</p>
+                    </div>
+                    <div class="story-content">
+                        <p>From optometrist to IT pro, thanks to our platform. Our lessons helped me excel in projects and transformed my journey, giving me clarity and optimization skills!</p>
+                    </div>
+                </div>
+                <div class="story-card">
+                    <div class="story-header">
+                        <img src="https://via.placeholder.com/50" alt="User 2">
+                        <h3>Onkar Lapate</h3>
+                        <p>SDE-1 · Bombay Softwares</p>
+                    </div>
+                    <div class="story-content">
+                        <p>Chose our platform for structured, high-quality learning. The top-notch mentors, quick TAs, and supportive community made it the best decision ever.</p>
+                    </div>
+                </div>
+                <div class="story-card">
+                    <div class="story-header">
+                        <img src="https://via.placeholder.com/50" alt="User 3">
+                        <h3>Durgesh Chaubey</h3>
+                        <p>SDE-1 · MasterCard</p>
+                    </div>
+                    <div class="story-content">
+                        <p>Our platform exceeded my coding experience expectations. Transitioned from a consultant to SDE-1, with exceptional faculty and support from top institutions.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="explore-button">
+                <button>Explore Offerings</button>
+            </div>
+        </div>
+    </section>
+</body>
+</html>
+
+    </div>
+    
+    <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
+    <script>
+        var typed = new Typed('span', {
+          strings: ['<i>Expert mentoring</i>,.', ' Support'],
+          typeSpeed: 50,
+        });
+    </script>
+</body>
+</html>
