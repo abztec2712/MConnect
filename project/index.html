@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mentors Connect</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" href="images/favicon.png" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <script src="script.js"></script>
+    <script src="https://kit.fontawesome.com/5dbdfc7f6d.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="nav">
+            <div class="left">
+                <nav>
+                    <ul>
+                        <li><img src="images/MAIN_LOGO_MENTOR_CONNECT.jpg" alt="logo" id="logo"></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="right">
+                <nav>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">About</a></li>
+                        <li><a href="#">Become a Mentor</a></li>
+                        <li><a href="#">Find a Mentor</a></li>
+                        <li><a href="#">Book a Demo</a></li>
+                        <div class="login-buttons">
+                            <button class="login-mentor" onclick="openLoginModal('mentor')">Login as Mentor</button>
+                            <button class="login-mentee" onclick="openLoginModal('mentee')">Login as Mentee</button>
+                        </div>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        
+        <div class="heading">
+            <div class="headline">
+                <p>"Guiding you to success through <br><span>Mentoring</span>"</p>
+            </div>
+            <div class="rightboxheading">
+                <img src="images/Mentorteach-removebg-preview.png" alt="">
+            </div>
+        </div>
+
+        <section class="what-we-offer">
+            <h2>What We Offer</h2>
+            <div class="offer-container">
+                <div class="offer-box">
+                    <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80" alt="1 on 1 Mentoring">
+                    <p>1 on 1 Mentoring</p>
+                </div>
+                <div class="offer-box">
+                    <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80" alt="Expert Guidance">
+                    <p>Expert Guidance</p>
+                </div>
+                <div class="offer-box">
+                    <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80" alt="Find Your Path">
+                    <p>Find Your Path</p>
+                </div>
+                <div class="offer-box">
+                    <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80" alt="Gain Skills">
+                    <p>Gain Skills</p>
+                </div>
+                <div class="offer-box">
+                    <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80" alt="AI Support">
+                    <p>AI-Enabled Support</p>
+                    <span class="offer-description">24/7 AI assistance for quick problem-solving</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="partner-institutions">
+            <h2>Our Partner Institutions</h2>
+            <div class="partners-grid">
+                <div class="partner-logo">
+                    <img src="https://images.unsplash.com/photo-1562774053-701939374585?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80" alt="Institution 1">
+                </div>
+                <div class="partner-logo">
+                    <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80" alt="Institution 2">
+                </div>
+                <div class="partner-logo">
+                    <img src="https://images.unsplash.com/photo-1498243691581-b145c3f54a5a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80" alt="Institution 3">
+                </div>
+                <div class="partner-logo">
+                    <img src="https://images.unsplash.com/photo-1592280771190-3e2e4d571952?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80" alt="Institution 4">
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Chat Bot Button -->
+    <button id="chatbot-button" class="chatbot-button">
+        <i class="fas fa-comments"></i>
+    </button>
+
+    <!-- Chat Bot Modal -->
+    <div id="chatbot-modal" class="chatbot-modal">
+        <div class="chatbot-content">
+            <div class="chatbot-header">
+                <h3>AI Assistant</h3>
+                <button onclick="closeChatbot()" class="close-button">&times;</button>
+            </div>
+            <div class="chatbot-messages" id="chatbot-messages">
+                <!-- Messages will be added here -->
+            </div>
+            <div class="chatbot-input">
+                <input type="text" id="user-input" placeholder="Type your message...">
+                <button onclick="sendMessage()">Send</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
+    <script>
+        var typed = new Typed('span', {
+            strings: ['<i>Expert mentoring</i>,.', ' Support'],
+            typeSpeed: 50,
+        });
+    </script>
+</body>
+</html>
