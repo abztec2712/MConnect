@@ -83,7 +83,7 @@ body {
 
 /* Title Section */
 .title-section {
-  margin-top: 50px;
+  margin-top: 150px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -93,7 +93,7 @@ body {
 }
 
 .title-section h1 {
-  font-size: 12.5rem;
+  font-size: 10rem;
   color: var(--light-text);
   margin-left: 1rem;
   background: linear-gradient(45deg, #00ffff, #ff00ff);
@@ -150,7 +150,7 @@ body {
 }
 
 .heading p {
-  font-size: 4rem;
+  font-size: 2.5rem;
   color: var(--light-text);
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
   line-height: 1.2;
