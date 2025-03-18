@@ -43,9 +43,22 @@ body {
 }
 
 .nav-content {
+  display: center;
+  align-items: center;
   width: 100%;
-  max-width: 1200px;
+  height: 50%; /* Matches nav height */
+  padding: 10px 20px;
 }
+
+.nav-logo {
+  height: 80%;
+  filter: brightness(1.2);
+  position: absolute;  /* Ensures absolute positioning within the navbar */
+  top: 50%;            /* Moves the logo to the vertical center */
+  left: 2rem;          /* Adjusts distance from the left side */
+  transform: translateY(-50%); /* Centers the logo vertically */
+}
+
 
 .nav nav ul {
   display: flex;
@@ -89,18 +102,11 @@ body {
   text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
 }
 
-.title-logo {
-  margin-top: 10px;
-  height: 140px;
-  filter: brightness(0.7);
-}
-
 /* Login Buttons */
 .login-buttons {
   display: flex;
   gap: 10px;
-  margin-left: 20px;
-}
+  }
 
 .login-mentor, .login-mentee {
   padding: 8px 16px;
@@ -144,7 +150,7 @@ body {
 }
 
 .heading p {
-  font-size: 5rem;
+  font-size: 4rem;
   color: var(--light-text);
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
   line-height: 1.2;
