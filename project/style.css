@@ -107,8 +107,10 @@ body {
   display: flex;
   gap: 10px;
   }
-
-.login-mentor, .login-mentee {
+  
+.login-mentee {
+  background-color: hsl(180, 100%, 50%) !important; /* Light Blue */
+  color: #000000 !important; /* Adjust text color for contrast */
   padding: 8px 16px;
   border-radius: 4px;
   cursor: pointer;
@@ -118,16 +120,17 @@ body {
 }
 
 .login-mentor {
-  background-color: var(--primary);
-  color: var(--light-text);
+  background-color: #ff00ff; /* Light Purple */
+  color: #000000; /* Adjust text color for contrast */
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  border: none;
 }
 
-.login-mentee {
-  background-color: var(--secondary);
-  color: var(--light-text);
-}
-
-.login-mentor:hover, .login-mentee:hover {
+.login-mentee:hover, .login-mentor:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   filter: brightness(1.1);
@@ -393,4 +396,51 @@ body {
 
 .chatbot-input button:hover {
   background-color: var(--primary-dark);
+}
+
+footer {
+  background: var(--darker-bg);
+  padding: 40px 20px;
+  margin-top;
+  text-align: center;
+  color: var(--light-text);
+}
+
+.about-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.about-container h2 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  color: #ff00ff;
+}
+
+.about-container h3 {
+  margin-top: 20px;
+  font-size: 1.5rem;
+  color: hsl(180, 100%, 50%);
+}
+
+.about-container p {
+  font-size: 1rem;
+  color: var(--gray-text);
+  margin-bottom: 10px;
+}
+
+.social-icons {
+  margin-top: 20px;
+}
+
+.social-icons a {
+  display: inline-block;
+  font-size: 1.5rem;
+  color: var(--light-text);
+  margin: 0 10px;
+  transition: color 0.3s ease;
+}
+
+.social-icons a:hover {
+  color: var(--primary);
 }
