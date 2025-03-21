@@ -35,7 +35,7 @@ body {
   justify-content: Center;
   align-items: center;
   background-color: var(--darker-bg);
-  padding: 0 2rem;
+  padding: 0 4rem;
   height: 10vh;
   color: var(--light-text);
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
@@ -83,13 +83,13 @@ body {
 
 /* Title Section */
 .title-section {
-  margin-top: 150px;
+  margin-top: 80px;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1rem;
+  padding: 2rem;
   background: var(--darker-bg);
-  border-bottom: 1px solid var(--hover-bg);
+ 
 }
 
 .title-section h1 {
