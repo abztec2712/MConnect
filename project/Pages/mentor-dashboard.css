@@ -1,0 +1,136 @@
+/* Import the general styles from style.css */
+@import url('style.css');
+
+body {
+    font-family: "Times New Roman", serif;
+    background-color: #0d0d1a;
+    color: white;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px 30px;
+    background-color: rgba(10, 10, 30, 0.9);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+}
+
+.navbar {
+    font-size: 24px;
+    font-weight: bold;
+    color: #fff;
+}
+
+.logo {
+    height: 50px; /* Adjust as needed */
+    width: auto;
+    display: block;
+    filter: brightness(1.2);
+    position: absolute;  /* Ensures absolute positioning within the navbar */
+    top: 50%;            /* Moves the logo to the vertical center */
+    left: 2rem;          /* Adjusts distance from the left side */
+    transform: translateY(-50%); /* Centers the logo vertically */
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+.nav-links li {
+    display: inline;
+}
+
+.nav-links a {
+    text-decoration: none;
+    font-size: 18px;
+    color: #bbb;
+    transition: 0.3s;
+}
+
+.nav-links a:hover {
+    color: #fff;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+}
+
+.nav-links {
+    flex-grow: 1; /* Allows other links to take available space */
+    display: flex;
+    justify-content: center;
+}
+
+.logout-btn {
+    background-color: #ff4c98;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-left: auto;
+}
+
+.logout-btn:hover {
+    background-color: #e63a80;
+}
+
+.container {
+    max-width: 800px;
+    margin: 100px auto 20px;
+    padding: 20px;
+}
+
+.gradient-text {
+    font-size: 36px;
+    text-align: center;
+    background: linear-gradient(to right, #00c6ff, #ff4c98);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.card {
+    background-color: #1a1a40;
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.card h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.primary-btn {
+    background: linear-gradient(to right, #ff4c98, #00c6ff);
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.primary-btn:hover {
+    background: linear-gradient(to right, #00c6ff, #ff4c98);
+}
+
+/* Align all text to the left below navbar */
+.container section {
+    text-align: left;
+}

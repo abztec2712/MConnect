@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mentor Dashboard</title>
+    <link rel="stylesheet" href="mentor-dashboard.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <img src="Images\MConnect.jpg" class="logo">
+        <ul class="nav-links">
+            <li><a href="#">Appointment Requests</a></li>
+            <li><a href="#">Set Weekly Availability</a></li>
+            <li><a href="#">Profile</a></li>
+            <li><a href="#">Scheduled Appointments</a></li>
+        </ul>
+        <button class="logout-btn">Logout</button>
+    </nav>
+
+    <div class="container">
+        <h1 class="gradient-text">Welcome, Mentor</h1>
+
+        <section class="card">
+            <h2>Appointment Requests</h2>
+            <p>No new appointment requests.</p>
+        </section>
+
+        <section class="card">
+            <h2>Set Weekly Availability</h2>
+            <label>Select Days:</label>
+            <select multiple>
+                <option>Monday</option>
+                <option>Tuesday</option>
+                <option>Wednesday</option>
+                <option>Thursday</option>
+                <option>Friday</option>
+            </select>
+            <label>Start Time:</label>
+            <input type="time">
+            <label>End Time:</label>
+            <input type="time">
+            <button class="primary-btn">Save Availability</button>
+        </section>
+
+        <section class="card">
+            <h2>Profile</h2>
+            <p>Edit your personal details and preferences here.</p>
+            <button class="primary-btn">Edit Profile</button>
+        </section>
+    </div>
+</body>
+</html>
