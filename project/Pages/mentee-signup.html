@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mentor Signup - MConnect</title>
+    <title>Mentor Signup</title>
     <link rel="stylesheet" href="page-styles.css">
 </head>
 <body>
     
     <div class="login-container">
         <img src="Images\MConnect.jpg" class="login-logo">
-        <h2>Mentor Signup</h2>
+        <h2>Mentee Signup</h2>
     <!-- Signup Form -->
         <form id="signupForm">
             <label for="signup-name">Full Name:</label>
@@ -24,7 +24,7 @@
 
             <button type="submit">Sign Up</button>
 
-            <p>Already Have an account?<a href="mentor-login.html">Take me to login</a></p>
+            <p>Already Have an account?<a href="mentee-login.html">Take me to login</a></p>
 
         </form>
     </div>
@@ -39,7 +39,7 @@
             const password = document.getElementById("signup-password").value;
 
             try {
-                const response = await fetch("http://localhost:5000/signup", {
+                const response = await fetch("http://localhost:5000/mentee/signup", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"

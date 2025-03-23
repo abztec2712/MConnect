@@ -4,26 +4,27 @@
     
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mentor Dashboard</title>
+    <title>Mentee Dashboard</title>
     <link rel="stylesheet" href="mentor-dashboard.css">
+    <link rel="shortcut icon" href="images/favicon.png" type="image/x-icon">
     <link rel="stylesheet" href="style.css">
+    <script src="..\script.js"></script>
+    <script src="https://kit.fontawesome.com/5dbdfc7f6d.js" crossorigin="anonymous"></script>
+
 </head>
 <body>
     <nav class="navbar">
         <img src="Images\MConnect.jpg" class="logo">
         <ul class="nav-links">
-            <li><a href="#">Appointment Requests</a></li>
-            <li><a href="#">Set Weekly Availability</a></li>
-            <li><a href="#">Profile</a></li>
-            <li><a href="#">Scheduled Appointments</a></li>
+            
+            <h2>Welcome Mentee</h2>
+            
         </ul>
         <button onclick="location.href='../index.html'" class="logout-btn" >Logout</button>
-        
     </nav>
 
     <div class="container">
-        <h1 class="gradient-text">Welcome, Mentor</h1>
-
+       
         <section class="card">
             <h2>Appointment Requests</h2>
             <p>No new appointment requests.</p>
@@ -52,5 +53,28 @@
             <button class="primary-btn">Edit Profile</button>
         </section>
     </div>
+
+    <!-- Chat Bot Button -->
+    <button id="chatbot-button" class="chatbot-button">
+        <i class="fas fa-comments"></i>
+    </button>
+
+    <!-- Chat Bot Modal -->
+    <div id="chatbot-modal" class="chatbot-modal">
+        <div class="chatbot-content">
+            <div class="chatbot-header">
+                <h3>AI Assistant</h3>
+                <button onclick="closeChatbot()" class="close-button">&times;</button>
+            </div>
+            <div class="chatbot-messages" id="chatbot-messages">
+                <!-- Messages will be added here -->
+            </div>
+            <div class="chatbot-input">
+                <input type="text" id="user-input" placeholder="Type your message...">
+                <button onclick="sendMessage()">Send</button>
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>

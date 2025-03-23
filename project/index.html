@@ -23,9 +23,8 @@
                         
                         <li><a href="#">Home</a></li>
                         <li><a href="#about">About</a></li>
-                        <li><a href="#">Become a Mentor</a></li>
+                        <li><a href="Pages\mentor-signup.html">Become a Mentor</a></li>
                         <li><a href="#">Find a Mentor</a></li>
-                        <li><a href="#">Book a Demo</a></li>
                         <div class="login-buttons">
                             <button onclick="location.href='Pages/mentor-login.html'" class="login-mentor">Login as Mentor</button>
                             <button onclick="location.href='Pages/mentee-login.html'" class="login-mentee">Login as Mentee</button>
@@ -116,29 +115,7 @@
             </div>
         </div>
     </footer>
-
-    <!-- Chat Bot Button -->
-    <button id="chatbot-button" class="chatbot-button">
-        <i class="fas fa-comments"></i>
-    </button>
-
-    <!-- Chat Bot Modal -->
-    <div id="chatbot-modal" class="chatbot-modal">
-        <div class="chatbot-content">
-            <div class="chatbot-header">
-                <h3>AI Assistant</h3>
-                <button onclick="closeChatbot()" class="close-button">&times;</button>
-            </div>
-            <div class="chatbot-messages" id="chatbot-messages">
-                <!-- Messages will be added here -->
-            </div>
-            <div class="chatbot-input">
-                <input type="text" id="user-input" placeholder="Type your message...">
-                <button onclick="sendMessage()">Send</button>
-            </div>
-        </div>
-    </div>
-    
+  
     <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
     <script>
         var typed = new Typed('span', {

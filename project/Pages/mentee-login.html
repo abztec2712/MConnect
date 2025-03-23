@@ -1,32 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script>
-        function googleLogin() {
-            window.location.href = "https://accounts.google.com/signin/oauth"; // Replace with actual Google OAuth URL
-        }
-    </script>    
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mentee Login - MConnect</title>
-    <link rel="stylesheet" href="page-styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mentee Login - MConnect</title>
+  <link rel="stylesheet" href="page-styles.css" />
 </head>
 <body>
-    <div class="login-container">
-        <h2>Mentee Login</h2>
-        <form action="mentee-dashboard.html" method="POST">
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
-            
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
-            
-            <button type="submit">Login</button>
-        </form>
-        <p>Don't have an account? <a href="mentee-signup.html">Sign Up</a></p>
-        <div class="google-login">
-            <button onclick="googleLogin()">Login with Google</button>
-        </div>
-    </div>
+  <div class="login-container">
+    <img src="Images\MConnect.jpg" class="login-logo">
+    <h2>Mentee Login</h2>
+    <form id="loginForm">
+      <label for="email">Email:</label>
+      <input type="email" id="email" required />
+
+      <label for="password">Password:</label>
+      <input type="password" id="password" required />
+
+      <button type="submit">Login</button>
+    </form>
+    <p>Don't have an account? <a href="mentee-signup.html">Sign Up</a></p>
+  </div>
+
+  <script>
+    document.getElementById("loginForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      try {
+        const response = await fetch("http://localhost:5000/mentee/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password }),
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          localStorage.setItem("token", data.token);
+          alert("Login successful!");
+          window.location.href = "mentee-dashboard.html";
+        } else {
+          alert("Login failed: " + (data.error || "An unknown error occurred"));
+        }
+      } catch (error) {
+        console.error("Error during login:", error);
+        alert("Something went wrong. Please try again.");
+      }
+    });
+  </script>
 </body>
 </html>

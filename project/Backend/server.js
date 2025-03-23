@@ -153,4 +153,14 @@ app.post("/mentee/login", async (req, res) => {
     }
 });
 
+// ✅ Protected Mentor Dashboard Route
+app.get("/mentee-dashboard", verifyToken, async (req, res) => {
+    try {
+        const mentor = await Mentor.findById(req.userId).select("-password");
+        if (!mentor) return res.status(404).json({ error: "Mentor not found" });
 
+        res.json({ message: "Welcome to Mentee Dashboard", mentor });
+    } catch (error) {
+        res.status(500).json({ error: "Error retrieving dashboard", details: error.message });
+    }
+});
