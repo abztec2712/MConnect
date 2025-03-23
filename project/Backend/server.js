@@ -100,3 +100,57 @@ app.get("/test-db", async (req, res) => {
 
 // ✅ Start Server
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+
+// ✅ Mentee Schema
+const MenteeSchema = new mongoose.Schema({
+    name: String,
+    email: { type: String, unique: true },
+    password: String
+});
+const Mentee = mongoose.model("Mentee", MenteeSchema);
+
+// ✅ Mentee Signup Route
+app.post("/mentee/signup", async (req, res) => {
+    try {
+        const { name, email, password } = req.body;
+
+        const existingMentee = await Mentee.findOne({ email });
+        if (existingMentee) {
+            return res.status(400).json({ message: "Mentee already exists" });
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const newMentee = new Mentee({ name, email, password: hashedPassword });
+
+        await newMentee.save();
+        res.status(201).json({ message: "Mentee registered successfully!" });
+
+    } catch (error) {
+        res.status(500).json({ message: "Error registering mentee", details: error.message });
+    }
+});
+
+// ✅ Mentee Login Route
+app.post("/mentee/login", async (req, res) => {
+    try {
+        const { email, password } = req.body;
+
+        const mentee = await Mentee.findOne({ email });
+        if (!mentee) {
+            return res.status(400).json({ message: "Mentee not found" });
+        }
+
+        const isMatch = await bcrypt.compare(password, mentee.password);
+        if (!isMatch) {
+            return res.status(400).json({ message: "Invalid credentials" });
+        }
+
+        const token = jwt.sign({ id: mentee._id }, process.env.SECRET_KEY, { expiresIn: "1h" });
+        res.json({ message: "Login successful", token });
+
+    } catch (error) {
+        res.status(500).json({ message: "Error logging in", details: error.message });
+    }
+});
+
+
