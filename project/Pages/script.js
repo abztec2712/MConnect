@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (message) {
             addMessage('user', message);
             userInput.value = '';
-            
+
             // Show loading message
             const loadingId = addMessage('bot', 'Thinking...');
 
@@ -67,22 +67,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 },
                 body: JSON.stringify({ message: userMessage })
             });
-    
+
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
-    
+
             const data = await response.json();
-            console.log("Received from Backend:", data);
-    
-            return data.text || "Oops! No response generated.";
+            console.log("Received from Backend:", data.text);
+
+            // Correctly extract the AI response
+            return data.text;
         } catch (error) {
             console.error("Error fetching response from backend:", error);
             return "Oops! Something went wrong.";
         }
     }
-    
-    
+
     function addMessage(sender, text) {
         const messageDiv = document.createElement('div');
         messageDiv.className = `message ${sender}-message`;
