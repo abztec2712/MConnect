@@ -41,22 +41,24 @@ document.addEventListener('DOMContentLoaded', () => {
     window.sendMessage = async () => {
         const message = userInput.value.trim();
         if (message) {
-            addMessage('user', message);
+            const userMessage = message; // Store the original user message
+            addMessage('user', userMessage); // Display user's message correctly
             userInput.value = '';
-
-            // Show loading message
+    
+            // Show loading message in bot's chat section
             const loadingId = addMessage('bot', 'Thinking...');
-
+    
             try {
-                const botResponse = await getGeminiResponse(message);
-                // Replace loading message with actual response
-                updateMessage(loadingId, 'bot', botResponse);
+                const botResponse = await getGeminiResponse(userMessage);
+                updateMessage(loadingId, 'bot', botResponse); // Update bot's message, not user's
             } catch (error) {
-                updateMessage(loadingId, 'bot', "Sorry, I couldn't process that request. Please ensure the server is running.");
+                updateMessage(loadingId, 'bot', "Sorry, I couldn't process that request. Please try again.");
                 console.error("Error with Gemini API:", error);
             }
         }
     };
+    
+    
 
     async function getGeminiResponse(userMessage) {
         try {
