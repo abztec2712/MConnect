@@ -1,56 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mentor Dashboard</title>
     <link rel="stylesheet" href="mentor-dashboard.css">
-    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
-<body>
+<body onload="loadProfile()">
+
+    <!-- Navigation Bar -->
     <nav class="navbar">
-        <img src="Images\MConnect.jpg" class="logo">
+        <img src="Images/MConnect.jpg" class="logo">
         <ul class="nav-links">
-            <li><a href="#">Appointment Requests</a></li>
-            <li><a href="#">Set Weekly Availability</a></li>
-            <li><a href="#">Profile</a></li>
-            <li><a href="#">Scheduled Appointments</a></li>
+            <li><a href="#" onclick="showSection('profile')">Profile</a></li>
+            <li><a href="#" onclick="showSection('availability')">Set Availability</a></li>
+            <li><a href="#" onclick="showSection('appointments')">Appointment Requests</a></li>
+            <li><a href="#" onclick="showSection('scheduled')">Scheduled Appointments</a></li>
         </ul>
-        <button onclick="location.href='../index.html'" class="logout-btn" >Logout</button>
-        
+        <button onclick="location.href='../index.html'" class="logout-btn">Logout</button>
     </nav>
 
     <div class="container">
-        <h1 class="gradient-text">Welcome, Mentor</h1>
+        <!-- Profile Section -->
+        <section id="profile" class="card">
+            <h2>Mentor Profile</h2>
+            <div id="profile-view">
+                <img id="mentor-photo" src="" alt="Mentor Photo">
+                <p><strong>Name:</strong> <span id="mentor-name"></span></p>
+                <p><strong>Occupation:</strong> <span id="mentor-occupation"></span></p>
+                <p><strong>Department:</strong> <span id="mentor-department"></span></p>
+                <p><strong>Specialty:</strong> <span id="mentor-specialty"></span></p>
+                <p><strong>Phone:</strong> <span id="mentor-phone"></span></p>
+                <p><strong>Email:</strong> <span id="mentor-email"></span></p>
+                <button class="primary-btn" onclick="editProfile()">Edit Profile</button>
+            </div>
 
-        <section class="card">
-            <h2>Appointment Requests</h2>
-            <p>No new appointment requests.</p>
+            <!-- Profile Edit Form -->
+            <div id="profile-edit" style="display: none;">
+                <input type="file" id="photo">
+                <input type="text" id="name" placeholder="Name">
+                <input type="text" id="occupation" placeholder="Occupation">
+                <input type="text" id="department" placeholder="Department">
+                <input type="text" id="specialty" placeholder="Specialty">
+                <input type="text" id="phone" placeholder="Phone Number">
+                <input type="email" id="email" placeholder="College Email">
+                <button class="primary-btn" onclick="saveProfile()">Save</button>
+            </div>
         </section>
 
-        <section class="card">
+        <!-- Availability Section -->
+        <section id="availability" class="card" style="display: none;">
             <h2>Set Weekly Availability</h2>
-            <label>Select Days:</label>
-            <select multiple>
-                <option>Monday</option>
-                <option>Tuesday</option>
-                <option>Wednesday</option>
-                <option>Thursday</option>
-                <option>Friday</option>
-            </select>
+            <label>Select Date:</label>
+            <input type="date" id="available-date">
             <label>Start Time:</label>
-            <input type="time">
+            <input type="time" id="start-time">
             <label>End Time:</label>
-            <input type="time">
-            <button class="primary-btn">Save Availability</button>
+            <input type="time" id="end-time">
+            <button class="primary-btn" onclick="saveAvailability()">Save Availability</button>
         </section>
 
-        <section class="card">
-            <h2>Profile</h2>
-            <p>Edit your personal details and preferences here.</p>
-            <button class="primary-btn">Edit Profile</button>
+        <!-- Appointment Requests -->
+        <section id="appointments" class="card" style="display: none;">
+            <h2>Appointment Requests</h2>
+            <ul id="appointment-list"></ul>
+        </section>
+
+        <!-- Scheduled Appointments -->
+        <section id="scheduled" class="card" style="display: none;">
+            <h2>Scheduled Appointments</h2>
+            <div id="calendar"></div>
         </section>
     </div>
+
+    <script src="mentor-dashboard.js"></script>
 </body>
 </html>
