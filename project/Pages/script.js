@@ -38,27 +38,35 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    let messageCount = 0;
+
     window.sendMessage = async () => {
         const message = userInput.value.trim();
         if (message) {
-            const userMessage = message; // Store the original user message
-            addMessage('user', userMessage); // Display user's message correctly
+            const userMessage = message;
+            addMessage('user', userMessage);
             userInput.value = '';
-    
+
             // Show loading message in bot's chat section
             const loadingId = addMessage('bot', 'Thinking...');
-    
+
             try {
                 const botResponse = await getGeminiResponse(userMessage);
-                updateMessage(loadingId, 'bot', botResponse); // Update bot's message, not user's
+                updateMessage(loadingId, 'bot', botResponse);
+
+                messageCount++;
+                if (messageCount % 3 === 0) {
+                    setTimeout(() => {
+                        addMessage('bot', 'Are you satisfied with the responses? If not, you can book a session with a mentor here: [Book Appointment](#)');
+                    }, 1000);
+                }
+
             } catch (error) {
                 updateMessage(loadingId, 'bot', "Sorry, I couldn't process that request. Please try again.");
                 console.error("Error with Gemini API:", error);
             }
         }
     };
-    
-    
 
     async function getGeminiResponse(userMessage) {
         try {
@@ -67,7 +75,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 headers: { 
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({ message: userMessage })
+                body: JSON.stringify({ 
+                    message: `You are an expert student mentor. Keep your answers short and relevant. If a user asks about booking an appointment, reply with "You can book an appointment with a mentor here: <a href='mentor-dashboard.html' target='_blank'>Book Appointment</a>". Now respond to: "${userMessage}"`
+                })
             });
 
             if (!response.ok) {
@@ -77,7 +87,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = await response.json();
             console.log("Received from Backend:", data.text);
 
-            // Correctly extract the AI response
             return data.text;
         } catch (error) {
             console.error("Error fetching response from backend:", error);
@@ -88,16 +97,16 @@ document.addEventListener('DOMContentLoaded', () => {
     function addMessage(sender, text) {
         const messageDiv = document.createElement('div');
         messageDiv.className = `message ${sender}-message`;
-        messageDiv.textContent = text;
+        messageDiv.innerHTML = text; // Use innerHTML for clickable links
         messagesContainer.appendChild(messageDiv);
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
-        return messageDiv.id = `msg-${Date.now()}`; // Return ID for potential updates
+        return messageDiv.id = `msg-${Date.now()}`;
     }
 
     function updateMessage(messageId, sender, text) {
         const messageDiv = document.getElementById(messageId);
         if (messageDiv) {
-            messageDiv.textContent = text;
+            messageDiv.innerHTML = text; // Use innerHTML for clickable links
         } else {
             addMessage(sender, text);
         }
