@@ -10,23 +10,34 @@ function showSection(sectionId) {
     });
     document.getElementById(sectionId).style.display = "block";
 }
-axios.post("/login", { email, password })
-    .then(response => {
-        localStorage.setItem("mentorEmail", response.data.mentorEmail); // ✅ Store email
-        window.location.href = "/mentor-dashboard.html"; // Redirect to dashboard
-    })
-    .catch(error => alert("Login failed: " + error.response.data.message));
+
+// Authenticate and store token
+function login(email, password) {
+    axios.post("/login", { email, password })
+        .then(response => {
+            sessionStorage.setItem("authToken", response.data.token); // Store token
+            window.location.href = "/mentor-dashboard.html"; // Redirect to dashboard
+        })
+        .catch(error => alert("Login failed: " + error.response.data.message));
+}
+
+function editProfile() {
+    document.getElementById("profile-view").style.display = "none";
+    document.getElementById("profile-edit").style.display = "block";
+}
 
 
 // Load mentor profile dynamically
 function loadProfile() {
-    const mentorEmail = localStorage.getItem("mentorEmail"); // Get email from localStorage
-    if (!mentorEmail) {
-        console.error("No mentor email found. Please log in again.");
+    const authToken = sessionStorage.getItem("authToken"); // Get token from sessionStorage
+    if (!authToken) {
+        console.error("No authentication token found. Please log in again.");
         return;
     }
 
-    axios.get(`/get-profile/${mentorEmail}`)
+    axios.get("/get-profile", {
+        headers: { Authorization: authToken }
+    })
         .then(response => {
             const mentor = response.data;
             if (mentor && Object.keys(mentor).length > 0) {
@@ -46,68 +57,39 @@ function loadProfile() {
         .catch(error => console.error("Error loading profile:", error));
 }
 
-// Enable profile edit mode
-function editProfile() {
-    document.getElementById("profile-view").style.display = "none";
-    document.getElementById("profile-edit").style.display = "block";
-}
-
 // Save profile data to MongoDB
 function saveProfile() {
-    const mentorEmail = localStorage.getItem("mentorEmail"); // Ensure mentor email is used
-    if (!mentorEmail) {
-        alert("Error: Mentor email not found. Please log in again.");
-        return;
-    }
-
-    const mentorData = {
-        email: mentorEmail, // Use the correct mentor email
-        name: document.getElementById("name").value,
-        occupation: document.getElementById("occupation").value,
-        position: document.getElementById("position").value,
-        department: document.getElementById("department").value,
-        specialty: document.getElementById("specialty").value,
-        phone: document.getElementById("phone").value,
-        collegeEmail: document.getElementById("collegeEmail").value,
-        photo: document.getElementById("photo").value // Ideally, handle image upload separately
-    };
-
-    axios.post("/update-profile", mentorData)
-        .then(response => {
-            alert(response.data.message);
-            location.reload();
-        })
-        .catch(error => console.error("Error saving profile:", error));
+    const authToken = sessionStorage.getItem("authToken");
+if (!authToken) {
+    alert("Error: Authentication token not found. Please log in again.");
+    return;
 }
 
-// Save availability in MongoDB
-function saveAvailability() {
-    const mentorEmail = localStorage.getItem("mentorEmail"); // Get email dynamically
-    if (!mentorEmail) {
-        alert("Error: Mentor email not found.");
-        return;
-    }
-
-    const availabilityData = {
-        mentorEmail: mentorEmail,
-        date: document.getElementById("available-date").value,
-        startTime: document.getElementById("start-time").value,
-        endTime: document.getElementById("end-time").value
-    };
-
-    axios.post("/save-availability", availabilityData)
-        .then(response => alert("Availability saved successfully!"))
-        .catch(error => console.error("Error saving availability:", error));
+axios.post("/update-profile", mentorData, {
+    headers: { Authorization: authToken }
+})
+.then(response => {
+    alert(response.data.message);
+    location.reload();
+})
+.catch(error => console.error("Error saving profile:", error));
 }
 
 // Load and display appointment requests
 function loadAppointments() {
-    const appointmentList = document.getElementById("appointment-list");
-    appointmentList.innerHTML = "<li>Loading...</li>";
+    const authToken = sessionStorage.getItem("authToken");
+    if (!authToken) {
+        console.error("Authentication token not found.");
+        return;
+    }
 
-    axios.get("/get-appointments")  // Endpoint needs to be implemented in `server.js`
+    axios.get("/get-appointments", {
+        headers: { Authorization: authToken }
+    })
         .then(response => {
+            const appointmentList = document.getElementById("appointment-list");
             appointmentList.innerHTML = "";
+
             response.data.forEach(appointment => {
                 const listItem = document.createElement("li");
                 listItem.innerHTML = `<strong>${appointment.studentName}</strong> - ${appointment.date} at ${appointment.time}`;

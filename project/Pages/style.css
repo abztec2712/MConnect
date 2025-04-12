@@ -109,7 +109,7 @@ body {
   }
   
 .login-mentee {
-  background-color: hsl(180, 100%, 50%) !important; /* Light Blue */
+  background-color: #00c6ff !important; /* Light Blue */
   color: #000000 !important; /* Adjust text color for contrast */
   padding: 8px 16px;
   border-radius: 4px;
@@ -144,13 +144,16 @@ body {
   min-height: 40vh;
   width: 100%;
   background: linear-gradient(to right, var(--darker-bg), var(--dark-bg));
+  background: linear-gradient(30deg,#ff00ff,#00ffff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   padding: 2rem;
 }
 
 .headline {
   width: 100%;
   text-align: center;
-}
+  }
 
 .heading p {
   font-size: 2.5rem;

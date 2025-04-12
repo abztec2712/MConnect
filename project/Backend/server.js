@@ -14,7 +14,6 @@ app.use(cors()); // Enable CORS
 app.use(express.json());
 
 const SECRET_KEY = process.env.SECRET_KEY;
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
 // 🔹 Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI, {
@@ -103,10 +102,10 @@ app.post("/login", async (req, res) => {
     }
 });
 
-// ✅ Fetch Mentor Profile
-app.get("/get-profile/:email", async (req, res) => {
+// ✅ Fetch Mentor Profile using JWT
+app.get("/get-profile", verifyToken, async (req, res) => {
     try {
-        const mentor = await Mentor.findOne({ email: req.params.email }).select("-password");
+        const mentor = await Mentor.findById(req.userId).select("-password");
         if (!mentor) return res.status(404).json({ error: "Mentor not found" });
         res.json(mentor);
     } catch (error) {
@@ -114,16 +113,13 @@ app.get("/get-profile/:email", async (req, res) => {
     }
 });
 
-// ✅ Update Mentor Profile
-app.post("/update-profile", async (req, res) => {
+// ✅ Update Mentor Profile using JWT
+app.post("/update-profile", verifyToken, async (req, res) => {
     try {
-        const { email, name, occupation, position, department, specialty, phone, collegeEmail, photo } = req.body;
-        const updatedMentor = await Mentor.findOneAndUpdate(
-            { email },
-            { name, occupation, position, department, specialty, phone, collegeEmail, photo },
-            { new: true, upsert: true }
+        const updatedMentor = await Mentor.findByIdAndUpdate(
+            req.userId, req.body, { new: true, upsert: true }
         );
-        res.json({ message: "Profile updated successfully", mentor: updatedMentor });
+        res.json({ message: "Profile updated successfully" });
     } catch (error) {
         res.status(500).json({ error: "Error updating profile", details: error.message });
     }

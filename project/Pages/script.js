@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     checkServerHealth();
 
     setTimeout(() => {
-        addMessage('bot', 'Hello! 👋 How can I assist you today?');
+        addMessage('bot', 'Hello! I am MConnect 👋 How can I assist you today?');
     }, 500);
 
     chatbotButton.addEventListener('click', () => {
@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function checkServerHealth() {
         try {
-            const response = await fetch('http://localhost:5000/health');
+            const response = await fetch('http://localhost:5002/health');
             if (!response.ok) {
                 console.error('Server is not responding properly');
                 addMessage('bot', 'Server connection issue. Please try again later.');
@@ -70,13 +70,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function getGeminiResponse(userMessage) {
         try {
-            const response = await fetch("http://localhost:5000/api/gemini", {
+            const response = await fetch("http://localhost:5002/api/gemini", {
                 method: "POST",
                 headers: { 
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({ 
-                    message: `You are an expert student mentor. Keep your answers short and relevant. If a user asks about booking an appointment, reply with "You can book an appointment with a mentor here: <a href='mentor-dashboard.html' target='_blank'>Book Appointment</a>". Now respond to: "${userMessage}"`
+                    message: `You are MConnect, an expert student mentor. Keep your answers short and relevant. If a user asks about booking an appointment, reply with "You can book an appointment with a mentor here: <a href='mentor-dashboard.html' target='_blank'>Book Appointment</a>". Now respond to: "${userMessage}"`
                 })
             });
 
