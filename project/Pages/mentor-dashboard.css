@@ -120,7 +120,7 @@ body {
     line-height: 2;
     margin-bottom: 20px;
     border-radius: 30px!important;
-    box-shadow: 50px 50px 50px rgba(100, 100, 200, 10.3);
+    box-shadow: 30px 30px 25px rgba(120, 100, 200, 10.3);
 }
 
 .card h2 {
@@ -239,12 +239,23 @@ body {
 
 /* Time Slots Styles */
 .time-slots-container {
-  background-color: #f9f9f9;
+  background-color: #3c3c80;
   border-radius: 8px;
   padding: 20px;
   margin-top: 20px;
+  border-radius: 30px!important;
+  box-shadow: 25px 25px 25px rgba(180, 180, 180, 180);
 }
-
+.time-slots-container h4 {
+  font-size: 25px;
+  text-align: center;
+  background: linear-gradient(to left, #000000, #000000);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 10px;
+  line-height: 1;
+  vertical-align: top;
+}
 .time-slots {
   margin: 15px 0;
 }
@@ -266,9 +277,9 @@ body {
 .time-slot-remove {
   background: none;
   border: none;
-  color: #e74c3c;
+  color: #050100;
   cursor: pointer;
-  font-size: 18px;
+  font-size: 30px;
 }
 
 #add-time-slot {
