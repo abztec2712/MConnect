@@ -312,3 +312,39 @@ app.get("/mentee-dashboard", verifyToken, async (req, res) => {
         res.status(500).json({ error: "Error retrieving dashboard", details: error.message });
     }
 });
+
+// ✅ Get All Mentors (with optional search/filter)
+app.get("/get-all-mentors", async (req, res) => {
+    try {
+        const { search, department, specialty } = req.query;
+        
+        // Build the filter object based on query parameters
+        let filter = {};
+        
+        if (department) {
+            filter.department = department;
+        }
+        
+        if (specialty) {
+            filter.specialty = specialty;
+        }
+        
+        if (search) {
+            // Search across multiple fields using regex
+            filter.$or = [
+                { name: { $regex: search, $options: 'i' } },
+                { department: { $regex: search, $options: 'i' } },
+                { specialty: { $regex: search, $options: 'i' } },
+                { email: { $regex: search, $options: 'i' } }
+            ];
+        }
+        
+        // Fetch mentors with the specified filter
+        const mentors = await Mentor.find(filter).select("-password");
+        
+        res.json(mentors);
+    } catch (error) {
+        console.error("Error fetching mentors:", error);
+        res.status(500).json({ error: "Error fetching mentors", details: error.message });
+    }
+});
