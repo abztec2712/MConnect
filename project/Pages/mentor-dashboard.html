@@ -51,14 +51,44 @@
 
         <!-- Availability Section -->
         <section id="availability" class="card" style="display: none;">
-            <h2>Set Weekly Availability</h2>
-            <label>Select Date:</label>
-            <input type="date" id="available-date">
-            <label>Start Time:</label>
-            <input type="time" id="start-time">
-            <label>End Time:</label>
-            <input type="time" id="end-time">
-            <button class="primary-btn" onclick="saveAvailability()">Save Availability</button>
+            <h2>Set Your Availability</h2>
+            
+            <!-- Calendar View -->
+            <div class="calendar-container">
+                <div class="calendar-header">
+                    <button id="prev-month">&lt;</button>
+                    <h3 id="current-month">April 2025</h3>
+                    <button id="next-month">&gt;</button>
+                </div>
+                <div class="weekdays">
+                    <div>Sun</div>
+                    <div>Mon</div>
+                    <div>Tue</div>
+                    <div>Wed</div>
+                    <div>Thu</div>
+                    <div>Fri</div>
+                    <div>Sat</div>
+                </div>
+                <div id="calendar-days" class="calendar-grid"></div>
+            </div>
+            
+            <!-- Time Slots Selection -->
+            <div id="time-slots-container" class="time-slots-container" style="display: none;">
+                <h3>Set Available Time Slots for <span id="selected-date"></span></h3>
+                
+                <div class="time-slots">
+                    <div id="time-slots-list">
+                        <!-- Time slots will be added here dynamically -->
+                    </div>
+                    
+                    <button id="add-time-slot" class="secondary-btn">+ Add Another Time Slot</button>
+                </div>
+                
+                <div class="action-buttons">
+                    <button id="save-time-slots" class="primary-btn">Save Availability</button>
+                    <button id="cancel-time-slots" class="cancel-btn">Cancel</button>
+                </div>
+            </div>
         </section>
 
         <!-- Appointment Requests -->

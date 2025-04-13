@@ -177,14 +177,42 @@ app.post("/update-profile", verifyToken, async (req, res) => {
 });
 
 // ✅ Save Mentor Availability
-app.post("/save-availability", async (req, res) => {
+app.post("/save-availability", verifyToken, async (req, res) => {
     try {
         const { mentorEmail, date, startTime, endTime } = req.body;
-        const newAvailability = new Availability({ mentorEmail, date, startTime, endTime });
+        
+        // Validate the mentor exists
+        const mentor = await Mentor.findOne({ email: mentorEmail });
+        if (!mentor) {
+            return res.status(404).json({ error: "Mentor not found" });
+        }
+        
+        // Create new availability
+        const newAvailability = new Availability({ 
+            mentorEmail, 
+            date, 
+            startTime, 
+            endTime 
+        });
+        
         await newAvailability.save();
         res.json({ message: "Availability saved successfully" });
     } catch (error) {
         res.status(500).json({ error: "Error saving availability", details: error.message });
+    }
+});
+
+// ✅ Delete Mentor Availability for a specific date
+app.delete("/delete-availability/:email/:date", async (req, res) => {
+    try {
+        const { email, date } = req.params;
+        
+        // Delete all availability slots for the mentor on the specified date
+        await Availability.deleteMany({ mentorEmail: email, date: date });
+        
+        res.json({ message: "Availability deleted successfully" });
+    } catch (error) {
+        res.status(500).json({ error: "Error deleting availability", details: error.message });
     }
 });
 
