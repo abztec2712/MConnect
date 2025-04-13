@@ -59,7 +59,7 @@ const Appointment = mongoose.model("Appointment", AppointmentSchema);
 
 // ✅ JWT Middleware to Protect Routes
 const verifyToken = (req, res, next) => {
-    const token = req.headers["authorization"];
+    let token = req.headers["authorization"];
     if (!token) return res.status(403).json({ error: "No token provided" });
 
     jwt.verify(token, SECRET_KEY, (err, decoded) => {
@@ -102,7 +102,7 @@ app.post("/login", async (req, res) => {
     }
 });
 
-// ✅ Fetch Mentor Profile using JWT
+// ✅ Fetch Mentor Profile
 app.get("/get-profile", verifyToken, async (req, res) => {
     try {
         const mentor = await Mentor.findById(req.userId).select("-password");
@@ -113,13 +113,20 @@ app.get("/get-profile", verifyToken, async (req, res) => {
     }
 });
 
-// ✅ Update Mentor Profile using JWT
+// ✅ Update Mentor Profile
 app.post("/update-profile", verifyToken, async (req, res) => {
     try {
+        const { name, occupation, position, department, specialty, phone, collegeEmail, photo } = req.body;
+        
         const updatedMentor = await Mentor.findByIdAndUpdate(
-            req.userId, req.body, { new: true, upsert: true }
+            req.userId,
+            req.body,
+            { new: true }
         );
-        res.json({ message: "Profile updated successfully" });
+        if (!updatedMentor) {
+            return res.status(404).json({ error: "Mentor not found" });
+        }
+        res.json({ message: "Profile updated successfully", mentor: updatedMentor });
     } catch (error) {
         res.status(500).json({ error: "Error updating profile", details: error.message });
     }
