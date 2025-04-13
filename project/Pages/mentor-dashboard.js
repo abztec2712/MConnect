@@ -44,8 +44,8 @@ function loadProfile() {
             window.localStorage.setItem("mentorEmail", mentorEmail);
         }
     }
-    
-    axios.get(`http://localhost:5000/get-profile/${mentorEmail}`, {
+
+    axios.get(`http://localhost:5000/get-profile`, {
         headers: { Authorization: authToken }
     })
     .then(response => {
@@ -81,10 +81,18 @@ function loadProfile() {
     
     .catch(error => {
         console.error("Error loading profile:", error);
-        if (error.response && error.response.status === 401) {
-            alert("Your session has expired. Please log in again.");
-            window.location.href = "mentor-login.html";
+        if (mentorEmail) {
+            axios.get(`http://localhost:5000/get-profile/${mentorEmail}`)
+            .then(response => {
+                const mentor = response.data;
+                updateProfileUI(mentor);
+            })
+            .catch(error => {
+                console.error("Both profile fetch methods failed:", error);
+                editProfile();
+            });
         } else {
+            console.error("No mentor email available for fallback fetch");
             editProfile();
         }
     });

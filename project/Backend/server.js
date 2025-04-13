@@ -103,10 +103,31 @@ app.post("/login", async (req, res) => {
 });
 
 // ✅ Fetch Mentor Profile
+// Token-based profile endpoint (protected)
 app.get("/get-profile", verifyToken, async (req, res) => {
     try {
         const mentor = await Mentor.findById(req.userId).select("-password");
         if (!mentor) return res.status(404).json({ error: "Mentor not found" });
+        res.json(mentor);
+    } catch (error) {
+        res.status(500).json({ error: "Error retrieving profile", details: error.message });
+    }
+});
+
+// Email-based profile endpoint (public)
+app.get("/get-profile/:email", async (req, res) => {
+    try {
+        const mentor = await Mentor.findOne({ email: req.params.email }).select("-password");
+        
+        // Try finding by collegeEmail if no result with email
+        if (!mentor) {
+            const mentorByCollegeEmail = await Mentor.findOne({ collegeEmail: req.params.email }).select("-password");
+            if (!mentorByCollegeEmail) {
+                return res.status(404).json({ error: "Mentor not found" });
+            }
+            return res.json(mentorByCollegeEmail);
+        }
+        
         res.json(mentor);
     } catch (error) {
         res.status(500).json({ error: "Error retrieving profile", details: error.message });
@@ -118,16 +139,39 @@ app.post("/update-profile", verifyToken, async (req, res) => {
     try {
         const { name, occupation, position, department, specialty, phone, collegeEmail, photo } = req.body;
         
-        const updatedMentor = await Mentor.findByIdAndUpdate(
-            req.userId,
-            req.body,
-            { new: true }
-        );
-        if (!updatedMentor) {
+        console.log("Updating profile for user ID:", req.userId);
+        console.log("Update data:", req.body);
+
+        const mentor = await Mentor.findById(req.userId);
+        if (!mentor) {
             return res.status(404).json({ error: "Mentor not found" });
         }
-        res.json({ message: "Profile updated successfully", mentor: updatedMentor });
+
+        const updatedMentor = await Mentor.findByIdAndUpdate(
+            req.userId,
+            { name, occupation, position, department, specialty, phone, collegeEmail, photo },
+            { new: true }
+        );
+
+        if (mentor.email === null && email) {
+            mentor.email = email;
+        }
+
+        mentor.name = name || mentor.name;
+        mentor.occupation = occupation || mentor.occupation;
+        mentor.position = position || mentor.position;
+        mentor.department = department || mentor.department;
+        mentor.specialty = specialty || mentor.specialty;
+        mentor.phone = phone || mentor.phone;
+        mentor.collegeEmail = collegeEmail || mentor.collegeEmail;
+        mentor.photo = photo || mentor.photo;
+
+        await mentor.save();
+        
+        console.log("Profile updated successfully:", mentor);
+        res.json({ message: "Profile updated successfully", mentor });
     } catch (error) {
+        console.error("Error updating profile:", error);
         res.status(500).json({ error: "Error updating profile", details: error.message });
     }
 });
