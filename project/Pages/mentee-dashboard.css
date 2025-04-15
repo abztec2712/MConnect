@@ -1,0 +1,560 @@
+/* Import the general styles from style.css */
+@import url('style.css');
+
+body {
+    font-family: "Times New Roman", serif;
+    background-color: #0d0d1a;
+    color: white;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px 30px;
+    background-color: rgba(10, 10, 30, 0.9);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+}
+
+.navbar {
+    font-size: 24px;
+    font-weight: bold;
+    color: #fff;
+}
+
+.logo {
+    height: 50px; /* Adjust as needed */
+    width: auto;
+    display: block;
+    filter: brightness(1.2);
+    position: absolute;  /* Ensures absolute positioning within the navbar */
+    top: 50%;            /* Moves the logo to the vertical center */
+    left: 2rem;          /* Adjusts distance from the left side */
+    transform: translateY(-50%); /* Centers the logo vertically */
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+.nav-links li {
+    display: inline;
+}
+
+.nav-links h2{
+    font-size: 35px;
+    background: linear-gradient(to right, #00c6ff, #ff4c98);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-align: center;
+    justify-content: space-between;
+    margin-top: auto;
+
+}
+.nav-links a {
+    text-decoration: none;
+    font-size: 18px;
+    color: #bbb;
+    transition: 0.3s;
+}
+
+.nav-links a:hover {
+    color: #fff;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 10px;
+}
+
+.nav-links {
+    flex-grow: 1; /* Allows other links to take available space */
+    display: flex;
+    justify-content: center;
+}
+
+.logout-btn {
+    background-color: #ff4c98;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-left: auto;
+}
+
+.logout-btn:hover {
+    background-color: #e63a80;
+}
+
+.container {
+    max-width: 1000px;
+    margin: auto;
+    padding: 20px;
+}
+
+.gradient-text {
+    font-size: 36px;
+    text-align: center;
+    background: linear-gradient(to right, #00c6ff, #ff4c98);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.card {
+    background-color: #1a1a40;
+    padding: 60px;
+    margin-top: 80px;
+    font-size: 20px;
+    line-height: 2;
+    margin-bottom: 20px;
+    border-radius: 30px!important;
+    box-shadow: 30px 30px 25px rgba(120, 100, 200, 10.3);
+}
+
+.card h2 {
+    font-size: 50px;
+    text-align: center!important;
+    background: linear-gradient(to right, #00c6ff, #ff4c98);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 10px;
+    line-height: 1;
+    vertical-align: top!important;
+}
+
+.card h3 {
+  font-size: 40px;
+  text-align: center!important;
+  background: linear-gradient(to left, #00c6ff, #ff4c98);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 10px;
+  line-height: 1;
+  vertical-align: top!important;
+}
+
+.primary-btn {
+    background: linear-gradient(to right, #ff4c98, #00c6ff);
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    margin-top: 25px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.primary-btn:hover {
+    background: linear-gradient(to right, #00c6ff, #ff4c98);
+}
+
+/* Calendar Styles */
+.calendar-container {
+  margin-bottom: 20px;
+}
+
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.calendar-header button {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #2c3e50;
+  padding: 5px 10px;
+}
+
+.weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+}
+
+.calendar-day {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  cursor: pointer;
+  position: relative;
+}
+
+.calendar-day:hover {
+  background-color: #000000;
+}
+
+.calendar-day.selected {
+  background-color: #3498db;
+  color: white;
+}
+
+.calendar-day.today {
+  border: 2px solid #3498db;
+}
+
+.calendar-day.has-slots::after {
+  content: '';
+  position: absolute;
+  bottom: 2px;
+  width: 4px;
+  height: 4px;
+  background-color: #27ae60;
+  border-radius: 50%;
+}
+
+.calendar-day.weekend {
+  color: #e74c3c;
+}
+
+.calendar-day.other-month {
+  color: #bdc3c7;
+}
+
+/* Time Slots Styles */
+.time-slots-container {
+  background-color: #3c3c80;
+  border-radius: 8px;
+  padding: 20px;
+  margin-top: 20px;
+  border-radius: 30px!important;
+  box-shadow: 25px 25px 25px rgba(180, 180, 180, 180);
+}
+.time-slots-container h4 {
+  font-size: 25px;
+  text-align: center;
+  background: linear-gradient(to left, #ffffff, #ffffff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 10px;
+  line-height: 1;
+  vertical-align: top;
+}
+.time-slots {
+  margin: 15px 0;
+}
+
+.time-slot {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  gap: 10px;
+}
+
+.time-slot input[type="time"] {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  flex: 1;
+}
+
+.time-slot-remove {
+  background: none;
+  border: none;
+  color: #050100;
+  cursor: pointer;
+  font-size: 30px;
+}
+
+#add-time-slot {
+  margin-top: 10px;
+  width: auto;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.action-buttons button {
+  flex: 1;
+}
+
+.cancel-btn {
+  background-color: #95a5a6;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.cancel-btn:hover {
+  background-color: #7f8c8d;
+}
+
+/* Align all text to the left below navbar */
+.container section {
+    text-align: left;
+}
+
+/* Chatbot Styles */
+.chatbot-button {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background-color: hsl(180, 100%, 66%)!important; /* Light Blue */
+    color: rgb(0, 0, 0)!important;
+    border: none;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .chatbot-button:hover {
+    transform: scale(1.1);
+    background-color: var(--primary-dark);
+  }
+  
+  .chatbot-modal {
+    display: none;
+    position: fixed;
+    bottom: 10px!important;
+    right: 50px!important;
+    width: 40%!important;
+    height: 85%!important;
+    background-color: black;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(255, 255, 255, 0.4);
+    z-index: 1000;
+  }
+  
+  .chatbot-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  
+  .chatbot-header {
+    padding: 15px;
+    background: linear-gradient(45deg, #02e9e9, #eb02eb);
+    -webkit-text-fill-color: black;   
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .close-button {
+    background: none;
+    border: none;
+    color: var(--light-text);
+    font-size: 24px;
+    cursor: pointer;
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+  }
+  
+  .close-button:hover {
+    opacity: 1;
+  }
+  
+  .chatbot-messages {
+    flex-grow: 1;
+    padding: 15px;
+    overflow-y: auto;
+    color: #eb02eb !important;
+  }
+  
+  .message {
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    max-width: 80%;
+  }
+  
+  .user-message {
+    background-color: rgba(255, 255, 255, 0.932);
+    margin-left: auto;
+    color: black;
+  }
+  
+  .bot-message {
+    background-color: rgb(99, 99, 99);
+    color: var(--light-text);
+  }
+  
+  .chatbot-input {
+    padding: 15px;
+    border-top: 1px solid var(--hover-bg);
+    display: flex;
+    gap: 10px;
+  }
+  
+  .chatbot-input input {
+    flex-grow: 1;
+    padding: 8px;
+    border: 1px solid var(--hover-bg);
+    border-radius: 4px;
+    background-color: var(--darker-bg);
+    color: var(--light-text);
+  }
+  
+  .chatbot-input input::placeholder {
+    color: var(--gray-text);
+  }
+  
+  .chatbot-input button {
+    padding: 8px 16px;
+    background-color: rgba(255, 255, 255, 0.91);
+    color: black !important;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .chatbot-input button:hover {
+    background-color: rgba(255, 4, 247, 0.9);
+  }
+
+  /* Appointments table styling */
+.table-container {
+    overflow-x: auto;
+    margin: 15px 0;
+}
+
+.appointments-table {
+    width: 100%;
+    border-collapse: collapse;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.appointments-table th, 
+.appointments-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.appointments-table th {
+    background-color: transparent;
+    font-weight: 600;
+}
+
+.appointments-table tr:hover {
+    background-color: #000000;
+}
+
+/* Status indicators */
+.status {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.85em;
+    font-weight: 500;
+}
+
+.status.pending {
+    background-color: transparent;
+    color: #f57c00;
+}
+
+.status.confirmed {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+}
+
+.status.rejected {
+    background-color: #ffebee;
+    color: #c62828;
+}
+
+.status.cancelled {
+    background-color: #e0e0e0;
+    color: #616161;
+}
+
+/* Small button variant */
+.secondary-btn.small {
+    padding: 4px 8px;
+    font-size: 0.85em;
+}
+
+/* Appointment cards for scheduled appointments */
+.appointment-card {
+    background-color: white;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.appointment-card h4 {
+    margin-top: 0;
+    color: #1976d2;
+}
+
+.appointment-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+/* Calendar styling improvements */
+.calendar-day.has-appointments {
+    background-color: #e3f2fd;
+    color: #1976d2;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.calendar-day.selected {
+    background-color: #bbdefb;
+    border: 2px solid #1976d2;
+}
+
+.day-appointments {
+    margin-top: 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 15px;
+}
+
+.newappointment-btn {
+  background: transparent;
+  color: transparent;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  margin-top: 15px;
+  cursor: pointer;
+  transition: 0.3s;
+}

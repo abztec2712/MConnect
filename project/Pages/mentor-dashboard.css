@@ -315,20 +315,24 @@ body {
     text-align: left;
 }
 
+/* Appointment Requests Section  
+background: linear-gradient(to right, #00c6ff, #ff4c98);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;*/
 .appointment-section {
   margin: 2rem auto;
   padding: 1rem;
   max-width: 1000px;
-  background: #f9fafb;
+  background: linear-gradient(to right, #00c6ff, #ff4c98);
   border-radius: 16px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  box-shadow: 20px 20px 20px rgba(200, 100, 203, 5);
   overflow-x: auto;
 }
 
 .appointment-section h2 {
   text-align: center;
   margin-bottom: 1rem;
-  color: #333;
+  color: #ffffff;
   font-size: 1.8rem;
   font-weight: 600;
 }
@@ -336,7 +340,7 @@ body {
 .appointment-table {
   width: 100%;
   border-collapse: collapse;
-  background-color: white;
+  background-color: #150c10;
   border-radius: 12px;
   overflow: hidden;
 }
@@ -345,19 +349,19 @@ body {
 .appointment-table td {
   padding: 0.9rem 1.2rem;
   text-align: left;
-  border-bottom: 1px solid #e5e7eb;
-  color: #333;
+  border-bottom: 1px solid transparent;
+  color: #ffffff;
   font-size: 0.95rem;
 }
 
 .appointment-table th {
-  background-color: #4f46e5;
-  color: white;
+  background: #1a1a40;
+  color: rgb(255, 255, 255);
   font-weight: 600;
 }
 
 .appointment-table tr:hover {
-  background-color: #f3f4f6;
+  background: linear-gradient(to top, #ff4c98, #00c6ff, #ff4c98);
 }
 
 .status-badge {
@@ -389,12 +393,13 @@ body {
 }
 
 .action-buttons button {
-  padding: 0.4rem 0.8rem;
+  padding: 1.4rem 0.8rem;
   border: none;
-  border-radius: 6px;
+  border-radius: 16px;
   font-weight: 500;
   cursor: pointer;
   transition: background-color 0.2s ease;
+  
 }
 
 .action-buttons .accept {
