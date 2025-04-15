@@ -33,16 +33,17 @@
             <div id="profile-view">
                 <div class="profile-details">
                     <img id="mentee-photo" src="" alt="Mentee Photo">
-                    <p><strong>Name:</strong> <span id="mentee-name">Prakhar</span></p>
-                    <p><strong>Registration No.:</strong> <span id="mentee-registrationNumber">RA2211028010105</span></p>
-                    <p><strong>Department:</strong> <span id="mentee-department">NWC</span></p>
-                    <p><strong>Section:</strong> <span id="mentee-section">R1</span></p>
-                    <p><strong>Phone:</strong> <span id="mentee-phone">7989613318</span></p>
-                    <p><strong>Email:</strong> <span id="mentee-email">prakhar@gmail.com</span></p>
-                    <button class="primary-btn" onclick="editProfile()">Edit Profile</button>
+                    <p><strong>Name:</strong> <span id="mentee-name">N/A</span></p>
+                    <p><strong>Registration No.:</strong> <span id="mentee-registrationNumber">N/A</span></p>
+                    <p><strong>Department:</strong> <span id="mentee-department">N/A</span></p>
+                    <p><strong>Section:</strong> <span id="mentee-section">N/A</span></p>
+                    <p><strong>Phone:</strong> <span id="mentee-phone">N/A</span></p>
+                    <p><strong>Email:</strong> <span id="mentee-email">N/A</span></p>
+                    <button id="edit-profile-btn" class="primary-btn">Edit Profile</button>
+
                 </div>
 
-            <!-- Profile Edit Form -->
+            <!-- Profile Edit Form 
             <div id="profile-edit" style="display: none;">
                 <input type="file" id="photo">
                 <input type="text" id="name" placeholder="Name">
@@ -52,7 +53,7 @@
                 <input type="text" id="phone" placeholder="Phone Number">
                 <input type="email" id="email" placeholder="College Email">
                 <button class="primary-btn" onclick="saveProfile()">Save</button>
-            </div>
+            </div> -->
         </section>
                 
         <!-- Requested Appointments Section -->
@@ -90,6 +91,7 @@
         </div>
     </div>
     <script src="script.js" type="module"></script>
-    <script src="mentee-dashboard.js" type="module"></script>
+    <script src="mentee-dashboard.js" defer></script>
+
 </body>
 </html>

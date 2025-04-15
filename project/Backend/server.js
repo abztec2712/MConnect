@@ -399,6 +399,27 @@ app.post("/mentee/update-profile", verifyToken, async (req, res) => {
     }
 });
 
+app.post("/request-appointment", async (req, res) => {
+    try {
+        const { mentorEmail, studentName, studentEmail, date, time, notes } = req.body;
+        
+        const newAppointment = new Appointment({
+            mentorEmail,
+            studentName,
+            studentEmail,
+            date,
+            time,
+            status: "Pending"
+        });
+        
+        await newAppointment.save();
+        res.status(201).json({ message: "Appointment request sent successfully" });
+    } catch (error) {
+        res.status(500).json({ error: "Error creating appointment", details: error.message });
+    }
+});
+
+
 // ✅ Get Requested Appointments (Pending or Rejected)
 app.get("/mentee/requested-appointments/:email", async (req, res) => {
     try {

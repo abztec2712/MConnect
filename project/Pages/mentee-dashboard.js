@@ -14,10 +14,10 @@ function login(email, password) {
         .catch(error => alert("Login failed: " + error.response.data.message));
 }
 
-function editProfile() {
+/*function editProfile() {
     document.getElementById("profile-view").style.display = "none";
     document.getElementById("profile-edit").style.display = "block";
-}
+}*/
 
 // Load mentee profile from backend
 function loadProfile() {
@@ -56,7 +56,7 @@ function updateProfileUI(mentee) {
 
         document.getElementById("mentee-photo").src = mentee.photo || "Images/default-avatar.png";
         document.getElementById("mentee-name").textContent = mentee.name || "N/A";
-        document.getElementById("mentee-registrationnumber").textContent = mentee.registrationNumber || "N/A";
+        document.getElementById("mentee-registrationNumber").textContent = mentee.registrationNumber || "N/A";
         document.getElementById("mentee-department").textContent = mentee.department || "N/A";
         document.getElementById("mentee-section").textContent = mentee.section || "N/A";
         document.getElementById("mentee-phone").textContent = mentee.phone || "N/A";
@@ -89,7 +89,7 @@ function editProfile() {
             </div>
             <div class="form-group">
                 <label for="registrationNumber">Registration No.:</label>
-                <input type="text" id="registrationNumber" placeholder="Registration Number" value="${document.getElementById("mentee-registrationnumber").textContent !== 'N/A' ? document.getElementById("mentee-registrationnumber").textContent : ''}">
+                <input type="text" id="registrationNumber" placeholder="Registration Number" value="${document.getElementById("mentee-registrationNumber").textContent !== 'N/A' ? document.getElementById("mentee-registrationNumber").textContent : ''}">
             </div>
             <div class="form-group">
                 <label for="department">Department:</label>
@@ -505,3 +505,8 @@ function formatDate(dateString) {
 function bookNewAppointment() {
     window.location.href = "appointment.html";
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+    // Other load functions already exist
+    document.getElementById("edit-profile-btn").addEventListener("click", editProfile);
+});

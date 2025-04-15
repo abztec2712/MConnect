@@ -68,7 +68,8 @@ function displayMentors(mentors) {
                 <p class="mentor-department"><strong>Department:</strong> ${mentor.department || 'N/A'}</p>
                 <p class="mentor-specialty"><strong>Specialty:</strong> ${mentor.specialty || 'N/A'}</p>
                 <p class="mentor-email"><strong>Email:</strong> ${mentor.email || 'N/A'}</p>
-                <a href="mailto:${mentor.email}" class="contact-btn">Contact Mentor</a>
+                <a href="https://mail.google.com/mail/?view=cm&to=${mentor.email}" target="_blank" class="contact-btn">Contact Mentor</a>
+
             </div>
         `;
         

@@ -12,9 +12,9 @@ const appointmentSection = document.getElementById('appointment-section');
 const timeSlotsSection = document.getElementById('time-slots-section');
 const confirmationSection = document.getElementById('confirmation-section');
 const successSection = document.getElementById('success-section');
-const chatbotToggle = document.getElementById('chatbot-toggle');
-const chatbotModal = document.getElementById('chatbot-modal');
-const closeChatbot = document.getElementById('close-chatbot');
+//const chatbotToggle = document.getElementById('chatbot-toggle');
+//const chatbotModal = document.getElementById('chatbot-modal');
+//const closeChatbot = document.getElementById('close-chatbot');
 const calendarDays = document.getElementById('calendar-days');
 const currentMonthEl = document.getElementById('current-month');
 const availableSlotsEl = document.getElementById('available-slots');
@@ -32,13 +32,13 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('next-month').addEventListener('click', () => changeMonth(1));
     
     // Chatbot event listeners
-    chatbotToggle.addEventListener('click', toggleChatbot);
-    closeChatbot.addEventListener('click', toggleChatbot);
+    //chatbotToggle.addEventListener('click', toggleChatbot);
+    //closeChatbot.addEventListener('click', toggleChatbot);
     
-    document.getElementById('send-message').addEventListener('click', sendChatMessage);
-    document.getElementById('chat-input').addEventListener('keypress', e => {
-        if (e.key === 'Enter') sendChatMessage();
-    });
+   //document.getElementById('send-message').addEventListener('click', sendChatMessage);
+    //document.getElementById('chat-input').addEventListener('keypress', e => {
+      //  if (e.key === 'Enter') sendChatMessage();
+    //});
 });
 
 // Fetch mentors from API
@@ -56,7 +56,7 @@ async function fetchMentors() {
         displayMentors(mentorsList);
     } catch (error) {
         console.error('Error fetching mentors:', error);
-        addChatbotMessage('Sorry, there was an error loading mentors. Please try refreshing the page.', 'bot');
+        console.log('Sorry, there was an error loading mentors. Please try refreshing the page.');
     }
 }
 
@@ -228,8 +228,7 @@ function processAvailability(availability) {
         }
         
         dateMap[slot.date].push({
-            startTime: slot
-            startTime: slot.startTime,
+            startTime: slot.startTime,  // Fixed: removed duplicate
             endTime: slot.endTime
         });
     });
@@ -460,23 +459,23 @@ async function submitAppointment() {
     const menteeName = document.getElementById('mentee-name').value.trim();
     const menteeEmail = document.getElementById('mentee-email').value.trim();
     const notes = document.getElementById('appointment-notes').value.trim();
-    
+
     // Validate form fields
     if (!menteeName) {
         alert('Please enter your name.');
         return;
     }
-    
+
     if (!menteeEmail) {
         alert('Please enter your email.');
         return;
     }
-    
+
     if (!validateEmail(menteeEmail)) {
         alert('Please enter a valid email address.');
         return;
     }
-    
+
     // Prepare appointment data
     const appointmentData = {
         mentorEmail: selectedMentor.email,
@@ -486,7 +485,7 @@ async function submitAppointment() {
         time: selectedTimeSlot.startTime,
         notes: notes
     };
-    
+
     try {
         // Send appointment request to server
         const response = await fetch('http://localhost:5000/request-appointment', {
@@ -496,16 +495,26 @@ async function submitAppointment() {
             },
             body: JSON.stringify(appointmentData)
         });
-        
+
         if (!response.ok) {
             throw new Error('Failed to submit appointment request');
         }
-        
+
         // Show success message
         showSuccessMessage();
-        
-        // Add success message to chatbot
-        addChatbotMessage('Your appointment request has been sent successfully! The mentor will be notified of your request.', 'bot');
+
+        // Redirect to Gmail with pre-filled message
+        const mentorLoginLink = "http://127.0.0.1:5500/MConnect/project/Pages/mentor-login.html"; // 🔁 Replace with actual mentor login URL
+        const mailSubject = encodeURIComponent("MConnect Appointment Request");
+        const mailBody = encodeURIComponent(
+            `Hi ${selectedMentor.name},\n\n` +
+            `I have made a request for an appointment through the MConnect website. ` +
+            `Please acknowledge the appointment request at the MConnect website:\n\n${mentorLoginLink}`
+        );
+
+        const gmailLink = `https://mail.google.com/mail/?view=cm&to=${selectedMentor.email}&su=${mailSubject}&body=${mailBody}`;
+        window.open(gmailLink, "_blank");
+
     } catch (error) {
         console.error('Error submitting appointment request:', error);
         alert('There was an error submitting your appointment request. Please try again later.');
