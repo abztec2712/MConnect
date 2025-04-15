@@ -1,5 +1,4 @@
-// Event listener for when the DOM is fully loaded
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function() {
     loadProfile();
     loadRequestedAppointments();
     loadScheduledAppointments();
@@ -7,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Authenticate and store token
 function login(email, password) {
-    axios.post("mentee/login", { email, password })
+    axios.post("/login", { email, password })
         .then(response => {
             window.localStorage.setItem("authToken", response.data.token); // Store token
             window.location.href = "/mentee-dashboard.html"; // Redirect to dashboard
@@ -20,14 +19,7 @@ function editProfile() {
     document.getElementById("profile-edit").style.display = "block";
 }
 
-
-// Function to edit profile
-function editProfile() {
-    document.getElementById("profile-view").style.display = "none";
-    document.getElementById("profile-edit").style.display = "block";
-}
-
-// Load mentor profile 
+// Load mentee profile from backend
 function loadProfile() {
     const authToken = window.localStorage.getItem("authToken");
     const menteeEmail = window.localStorage.getItem("menteeEmail");
@@ -38,39 +30,29 @@ function loadProfile() {
         return;
     }
 
-    // Try the token-based endpoint first (no email in URL)
-    axios.get("http://localhost:5000/mentee/get-profile", {
-        headers: { Authorization: authToken }
-    })
-    .then(response => {
-        const mentee = response.data;
-        updateProfileUI(mentee);
-    })
-    .catch(error => {
-        console.log("Token-based profile fetch failed, trying email-based endpoint...");
-        
-        // Fall back to email-based endpoint if token approach fails
-        if (mentorEmail) {
-            axios.get(`http://localhost:5000/mentee/get-profile/${menteeEmail}`)
-            .then(response => {
-                const mentee = response.data;
-                updateProfileUI(mentee);
-            })
-            .catch(error => {
-                console.error("Both profile fetch methods failed:", error);
-                editProfile();
-            });
-        } else {
-            console.error("No mentee email available for fallback fetch");
-            editProfile();
-        }
-    });
+// Fetch mentee profile data
+fetch("http://localhost:5000/mentee/profile", {
+    headers: { Authorization: authToken }
+})
+.then(response => {
+    if (!response.ok) {
+        throw new Error("Failed to fetch profile");
+    }
+    return response.json();
+})
+.then(mentee => {
+    updateProfileUI(mentee);
+})
+.catch(error => {
+    console.error("Error fetching mentee profile:", error);
+    // You might want to redirect to login or show an error message
+});
 }
 
-// Separate function to update UI with mentor data
+// Update UI with mentee data
 function updateProfileUI(mentee) {
     if (mentee && Object.keys(mentee).length > 0) {
-        window.localStorage.setItem("menteeEmail", mentee.email || mentee.collegeEmail);
+        window.localStorage.setItem("menteeEmail", mentee.email);
 
         document.getElementById("mentee-photo").src = mentee.photo || "Images/default-avatar.png";
         document.getElementById("mentee-name").textContent = mentee.name || "N/A";
@@ -78,184 +60,131 @@ function updateProfileUI(mentee) {
         document.getElementById("mentee-department").textContent = mentee.department || "N/A";
         document.getElementById("mentee-section").textContent = mentee.section || "N/A";
         document.getElementById("mentee-phone").textContent = mentee.phone || "N/A";
-        document.getElementById("mentee-email").textContent = email || "N/A";
-
-        document.getElementById("name").value = mentee.name || "";
-        document.getElementById("registrationnumber").value = mentee.registrationNumber || "";
-        document.getElementById("department").value = mentee.department || "";
-        document.getElementById("section").value = mentor.section || "";
-        document.getElementById("phone").value = mentee.phone || "";
-        document.getElementById("email").value = mentee.collegeEmail || mentee.email || "";
+        document.getElementById("mentee-email").textContent = mentee.email || "N/A";
     } else {
-        console.log("Mentee profile not found. Enabling edit mode.");
-        editProfile();
+        console.log("Mentee profile not found");
     }
 }
 
-// Save profile data
-function saveProfile() {
-    const authToken = window.localStorage.getItem("authToken");
-    const menteeEmail = window.localStorage.getItem("menteeEmail");
-
-if (!authToken) {
-    alert("Error: Authentication token not found. Please log in again.");
-    window.location.href = "mentee-login.html";
-    return;
-}
-
-const menteeData = {
-    email: menteeEmail,
-    name: document.getElementById("name").value,
-    registrationNumber: document.getElementById("registrationnumber").value,
-    department: document.getElementById("department").value,
-    section: document.getElementById("section").value,
-    phone: document.getElementById("phone").value,
-    collegeEmail: document.getElementById("email").value,
-};
-
-axios.post("http://localhost:5000/mentee/update-profile", menteeData, {
-    headers: { Authorization: authToken }
-})
-.then(response => {
-    alert(response.data.message);
-    document.getElementById("profile-edit").style.display = "none";
-    document.getElementById("profile-view").style.display = "block";
-    loadProfile();
-})
-
-.catch(error => {
-    console.error("Error saving profile:", error);
-    alert("Failed to save profile. Please try again.");
-});
-}
-
-document.addEventListener("DOMContentLoaded", function() {
-    loadProfile();
+// Edit profile functionality
+function editProfile() {
+    // Get the current profile view div
+    const profileView = document.getElementById("profile-view");
     
-    // Add event listeners for section navigation
-    document.querySelectorAll(".nav-links a").forEach(link => {
-        link.addEventListener("click", function(e) {
-            const sectionId = this.getAttribute("onclick").match(/'([^']+)'/)[1];
-            
-            // Load data based on selected section
-            if (sectionId === "appointments") {
-                loadAppointments();
-            } else if (sectionId === "scheduled") {
-                loadScheduledAppointments();
-            }
-        });
-    });
-});
-
-/* // Function to cancel edit
-function cancelEdit() {
-    document.getElementById("profile-edit").style.display = "none";
-    document.getElementById("profile-view").style.display = "block";
+    // Check if there's already an edit form
+    let profileEdit = document.getElementById("profile-edit");
+    
+    if (!profileEdit) {
+        // Create edit form if it doesn't exist
+        profileEdit = document.createElement("div");
+        profileEdit.id = "profile-edit";
+        profileEdit.innerHTML = `
+            <div class="form-group">
+                <label for="photo">Profile Photo:</label>
+                <input type="file" id="photo">
+            </div>
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" placeholder="Name" value="${document.getElementById("mentee-name").textContent !== 'N/A' ? document.getElementById("mentee-name").textContent : ''}">
+            </div>
+            <div class="form-group">
+                <label for="registrationNumber">Registration No.:</label>
+                <input type="text" id="registrationNumber" placeholder="Registration Number" value="${document.getElementById("mentee-registrationnumber").textContent !== 'N/A' ? document.getElementById("mentee-registrationnumber").textContent : ''}">
+            </div>
+            <div class="form-group">
+                <label for="department">Department:</label>
+                <input type="text" id="department" placeholder="Department" value="${document.getElementById("mentee-department").textContent !== 'N/A' ? document.getElementById("mentee-department").textContent : ''}">
+            </div>
+            <div class="form-group">
+                <label for="section">Section:</label>
+                <input type="text" id="section" placeholder="Section" value="${document.getElementById("mentee-section").textContent !== 'N/A' ? document.getElementById("mentee-section").textContent : ''}">
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone:</label>
+                <input type="text" id="phone" placeholder="Phone Number" value="${document.getElementById("mentee-phone").textContent !== 'N/A' ? document.getElementById("mentee-phone").textContent : ''}">
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" placeholder="Email" value="${document.getElementById("mentee-email").textContent !== 'N/A' ? document.getElementById("mentee-email").textContent : ''}">
+            </div>
+            <div class="action-buttons">
+                <button class="primary-btn" onclick="saveProfile()">Save</button>
+                <button class="secondary-btn" onclick="cancelEdit()">Cancel</button>
+            </div>
+        `;
+        
+        // Add the form after the profile view
+        profileView.parentNode.appendChild(profileEdit);
+    }
+    
+    // Hide profile view, show edit form
+    profileView.style.display = "none";
+    profileEdit.style.display = "block";
 }
 
-// Function to save profile
+// Cancel profile editing
+function cancelEdit() {
+    document.getElementById("profile-view").style.display = "block";
+    document.getElementById("profile-edit").style.display = "none";
+}
+
+// Save profile changes
 function saveProfile() {
     const authToken = window.localStorage.getItem("authToken");
     const menteeEmail = window.localStorage.getItem("menteeEmail");
 
     if (!authToken) {
-        alert("Authentication token missing. Please log in.");
+        alert("Error: Authentication token not found. Please log in again.");
         window.location.href = "mentee-login.html";
         return;
     }
 
-    const updatedEmail = document.getElementById("email").value;
-
     const menteeData = {
-        email: updatedEmail,
+        email: menteeEmail,
         name: document.getElementById("name").value,
         registrationNumber: document.getElementById("registrationNumber").value,
         department: document.getElementById("department").value,
         section: document.getElementById("section").value,
-        phone: document.getElementById("phone").value
+        phone: document.getElementById("phone").value,
+        // Only update email if it's different and valid
+        ...(document.getElementById("email").value !== menteeEmail && 
+           document.getElementById("email").value.includes('@') && 
+           {email: document.getElementById("email").value})
     };
 
+    // Handle photo upload if a file is selected
     const photoInput = document.getElementById("photo");
-    if (photoInput.files.length > 0) {
-        console.log("Photo upload placeholder:", photoInput.files[0].name);
+    if (photoInput.files && photoInput.files[0]) {
+        // This would require additional implementation for file upload
+        console.log("Photo selected for upload:", photoInput.files[0].name);
+        // In a real implementation, you'd use FormData to upload the file
     }
 
-    axios.post("http://localhost:5000/mentee/update-profile", menteeData, {
-        headers: { Authorization: authToken }
+    fetch("http://localhost:5000/mentee/update-profile", {
+        method: 'POST',
+        headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': authToken 
+        },
+        body: JSON.stringify(menteeData)
     })
     .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to save profile');
+        }
+        return response.json();
+    })
+    .then(data => {
         alert("Profile updated successfully!");
         document.getElementById("profile-edit").style.display = "none";
         document.getElementById("profile-view").style.display = "block";
-        loadProfile();
+        loadProfile(); // Reload profile with updated data
     })
     .catch(error => {
-        console.error("Error updating profile:", error);
-        alert("Profile update failed.");
+        console.error("Error saving profile:", error);
+        alert("Failed to save profile. Please try again.");
     });
 }
-
-// Function to book new appointment
-function bookNewAppointment() {
-    window.location.href = "appointment.html";
-}
-
-
-
-function loadProfile() {
-    const authToken = window.localStorage.getItem("authToken");
-    const menteeEmail = window.localStorage.getItem("menteeEmail");
-
-    if (!authToken) {
-        console.error("No authentication token found. Please log in again.");
-        window.location.href = "mentee-login.html";
-        return;
-    }
-
-    axios.get("http://localhost:5000/mentee/profile", {
-        headers: { Authorization: authToken }
-    })
-    .then(response => {
-        const mentee = response.data;
-        updateProfileUI(mentee);
-    })
-    .catch(error => {
-        console.log("Token fetch failed, trying email fallback...");
-        if (menteeEmail) {
-            axios.get(`http://localhost:5000/mentee/profile/${menteeEmail}`)
-                .then(response => updateProfileUI(response.data))
-                .catch(err => {
-                    console.error("Both profile fetch methods failed:", err);
-                    editProfile();
-                });
-        } else {
-            console.error("No mentee email available for fallback");
-            editProfile();
-        }
-    });
-}
-
-function updateProfileUI(mentee) {
-    if (!mentee || Object.keys(mentee).length === 0) return editProfile();
-
-    const email = mentee.email || mentee.collegeEmail;
-
-    window.localStorage.setItem("menteeEmail", email);
-
-    document.getElementById("mentee-photo").src = mentee.photo || "Images/default-avatar.png";
-    document.getElementById("mentee-name").textContent = mentee.name || "N/A";
-    document.getElementById("mentee-registrationnumber").textContent = mentee.registrationNumber || "N/A";
-    document.getElementById("mentee-department").textContent = mentee.department || "N/A";
-    document.getElementById("mentee-section").textContent = mentee.section || "N/A";
-    document.getElementById("mentee-phone").textContent = mentee.phone || "N/A";
-    document.getElementById("mentee-email").textContent = email || "N/A";
-
-    const fields = ["name", "registrationNumber", "department", "section", "phone", "email"];
-    fields.forEach(field => {
-        const input = document.getElementById(field);
-        if (input) input.value = mentee[field] || '';
-    });
-} */
 
 // Load requested appointments (pending or rejected)
 function loadRequestedAppointments() {

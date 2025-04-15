@@ -60,8 +60,9 @@ function displayMentors(mentors) {
         // Default image if no photo provided
         const photoSrc = mentor.photo || 'Images/default-profile.jpg';
         
+        //<img src="${photoSrc}" alt="${mentor.name}" class="mentor-photo" onerror="this.src='Images/default-profile.jpg'">
         mentorCard.innerHTML = `
-            <img src="${photoSrc}" alt="${mentor.name}" class="mentor-photo" onerror="this.src='Images/default-profile.jpg'">
+            
             <div class="mentor-info">
                 <h3 class="mentor-name">${mentor.name || 'N/A'}</h3>
                 <p class="mentor-department"><strong>Department:</strong> ${mentor.department || 'N/A'}</p>
