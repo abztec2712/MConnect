@@ -53,6 +53,8 @@ const AppointmentSchema = new mongoose.Schema({
     studentEmail: String,
     date: String,
     time: String,
+    notes: String, 
+    remarks: String,
     status: { type: String, default: "Pending" }
 });
 const Appointment = mongoose.model("Appointment", AppointmentSchema);
@@ -229,22 +231,50 @@ app.get("/get-availability/:email", async (req, res) => {
 // ✅ Fetch Appointment Requests
 app.get("/get-appointments/:email", async (req, res) => {
     try {
-        const appointments = await Appointment.find({ mentorEmail: req.params.email, status: "Pending" });
+        const appointments = await Appointment.find({
+            mentorEmail: req.params.email,
+            status: "Pending"
+        });
         res.json(appointments);
-    } catch (error) {
-        res.status(500).json({ error: "Error fetching appointments", details: error.message });
+    } catch (err) {
+        res.status(500).json({ error: "Failed to fetch appointments" });
     }
 });
+
+
+app.post("/update-appointment-status", async (req, res) => {
+    try {
+        const { appointmentId, status, remarks } = req.body;
+
+        const appointment = await Appointment.findById(appointmentId);
+        if (!appointment) return res.status(404).json({ error: "Appointment not found" });
+
+        appointment.status = status;
+        if (remarks !== undefined) {
+            appointment.remarks = remarks;
+        }
+
+        await appointment.save();
+        res.json({ message: "Appointment updated successfully" });
+    } catch (error) {
+        res.status(500).json({ error: "Failed to update appointment", details: error.message });
+    }
+});
+
 
 // ✅ Fetch Scheduled Appointments
 app.get("/get-scheduled-appointments/:email", async (req, res) => {
     try {
-        const appointments = await Appointment.find({ mentorEmail: req.params.email, status: "Confirmed" });
+        const appointments = await Appointment.find({
+            mentorEmail: req.params.email,
+            status: "Confirmed"
+        });
         res.json(appointments);
-    } catch (error) {
-        res.status(500).json({ error: "Error fetching scheduled appointments", details: error.message });
+    } catch (err) {
+        res.status(500).json({ error: "Failed to fetch scheduled appointments" });
     }
 });
+
 
 // ✅ Start Server
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
@@ -399,6 +429,7 @@ app.post("/mentee/update-profile", verifyToken, async (req, res) => {
     }
 });
 
+
 app.post("/request-appointment", async (req, res) => {
     try {
         const { mentorEmail, studentName, studentEmail, date, time, notes } = req.body;
@@ -424,16 +455,23 @@ app.post("/request-appointment", async (req, res) => {
 app.get("/mentee/requested-appointments/:email", async (req, res) => {
     try {
         const { email } = req.params;
-        
+        console.log(`Fetching appointments for email: ${email}`);
+        if (!email) {
+            return res.status(400).json({ error: "Email parameter is required" });
+        }
+
         // Find all appointments for this mentee that are pending or rejected
         const appointments = await Appointment.find({
-            studentEmail: email,
+            studentEmail: { $regex: new RegExp('^' + email + '$', 'i') },
             status: { $in: ["Pending", "Rejected"] }
         }).sort({ date: 1, time: 1 });
+        console.log(`Found ${appointments.length} appointments for ${email}`);
         
         // Enhance appointment data with mentor details
         const enhancedAppointments = await Promise.all(appointments.map(async (appointment) => {
-            const mentor = await Mentor.findOne({ email: appointment.mentorEmail });
+            const mentor = await Mentor.findOne({ 
+                email: { $regex: new RegExp('^' + appointment.mentorEmail + '$', 'i') } 
+            });
             return {
                 ...appointment._doc,
                 mentorName: mentor ? mentor.name : "Unknown Mentor",
@@ -444,6 +482,7 @@ app.get("/mentee/requested-appointments/:email", async (req, res) => {
         
         res.json(enhancedAppointments);
     } catch (error) {
+        console.error(`Error fetching appointments for ${req.params.email}:`, error);
         res.status(500).json({ error: "Error fetching requested appointments", details: error.message });
     }
 });

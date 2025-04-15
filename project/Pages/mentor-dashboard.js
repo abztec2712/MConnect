@@ -410,30 +410,86 @@ function saveTimeSlots() {
     });
 }
 
+const baseUrl = "http://localhost:5000";
+
 // Load and display appointment requests
 function loadAppointments() {
-    const authToken = window.localStorage.getItem("authToken");
-    if (!authToken) {
-        console.error("Authentication token not found.");
-        return;
-    }
+    const mentorEmail = localStorage.getItem("mentorEmail");
+    const baseUrl = "http://localhost:5000"; // or whatever your backend base is
 
-    axios.get("/get-appointments", {
-        headers: { Authorization: authToken }
-    })
-        .then(response => {
-            const appointmentList = document.getElementById("appointment-list");
-            appointmentList.innerHTML = "";
+    axios.get(`${baseUrl}/get-appointments/${mentorEmail}`)
+        .then(res => {
+            const tableBody = document.getElementById("appointment-requests-body");
+            tableBody.innerHTML = "";
 
-            response.data.forEach(appointment => {
-                const listItem = document.createElement("li");
-                listItem.innerHTML = `<strong>${appointment.studentName}</strong> - ${appointment.date} at ${appointment.time}`;
-                listItem.onclick = () => window.open(`mailto:${appointment.studentEmail}`);
-                appointmentList.appendChild(listItem);
+            res.data.forEach(app => {
+                const tr = document.createElement("tr");
+
+                tr.innerHTML = `
+                    <td>${app.studentName}</td>
+                    <td>${app.studentEmail}</td>
+                    <td>${app.notes || "No note added"}</td>
+                    <td>
+                        <span class="status-badge status-${app.status.toLowerCase()}">
+                            ${app.status}
+                        </span>
+                    </td>
+                    <td>
+                        <textarea class="remarks" id="remarks-${app._id}" placeholder="Add remarks..."></textarea>
+                    </td>
+                    <td class="action-buttons">
+                        <button class="accept" onclick="updateAppointmentStatus('${app._id}', 'Confirmed')">Accept</button>
+                        <button class="reject" onclick="updateAppointmentStatus('${app._id}', 'Rejected')">Reject</button>
+                    </td>
+                `;
+
+                tableBody.appendChild(tr);
             });
         })
-        .catch(error => console.error("Error loading appointments:", error));
+        .catch(err => console.error("Error loading appointments:", err));
 }
+
+
+function updateAppointmentStatus(appointmentId, status) {
+    const remarks = document.getElementById(`remarks-${appointmentId}`).value;
+
+    axios.post("/update-appointment-status", {
+        appointmentId,
+        status,
+        remarks
+    }).then(() => {
+        alert(`Appointment ${status}`);
+        loadAppointments();
+    }).catch(err => {
+        console.error("Failed to update appointment:", err);
+        alert("Error updating appointment");
+    });
+}
+
+function loadScheduledAppointments() {
+    const mentorEmail = localStorage.getItem("mentorEmail");
+
+    axios.get(`${baseUrl}/get-scheduled-appointments/${mentorEmail}`)
+
+        .then(res => {
+            const calendar = document.getElementById("calendar");
+            calendar.innerHTML = "";
+
+            res.data.forEach(app => {
+                const block = document.createElement("div");
+                block.classList.add("calendar-entry");
+                block.innerHTML = `
+                    <strong>${app.date} - ${app.time}</strong><br>
+                    ${app.studentName} (${app.studentEmail})<br>
+                    ${app.notes ? `<em>Note: ${app.notes}</em><br>` : ""}
+                    ${app.remarks ? `<strong>Remarks: ${app.remarks}</strong>` : ""}
+                `;
+                calendar.appendChild(block);
+            });
+        })
+        .catch(err => console.error("Error loading scheduled appointments:", err));
+}
+
 
 document.addEventListener("DOMContentLoaded", function() {
     loadProfile();

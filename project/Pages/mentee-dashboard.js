@@ -109,15 +109,15 @@ function editProfile() {
             </div>
             <div class="action-buttons">
                 <button class="primary-btn" onclick="saveProfile()">Save</button>
-                <button class="secondary-btn" onclick="cancelEdit()">Cancel</button>
+                <button class="primary-btn" onclick="cancelEdit()">Cancel</button>
             </div>
         `;
         
-        // Add the form after the profile view
+        
         profileView.parentNode.appendChild(profileEdit);
     }
     
-    // Hide profile view, show edit form
+    
     profileView.style.display = "none";
     profileEdit.style.display = "block";
 }
@@ -146,18 +146,18 @@ function saveProfile() {
         department: document.getElementById("department").value,
         section: document.getElementById("section").value,
         phone: document.getElementById("phone").value,
-        // Only update email if it's different and valid
+        
         ...(document.getElementById("email").value !== menteeEmail && 
            document.getElementById("email").value.includes('@') && 
            {email: document.getElementById("email").value})
     };
 
-    // Handle photo upload if a file is selected
+    
     const photoInput = document.getElementById("photo");
     if (photoInput.files && photoInput.files[0]) {
-        // This would require additional implementation for file upload
+        
         console.log("Photo selected for upload:", photoInput.files[0].name);
-        // In a real implementation, you'd use FormData to upload the file
+        
     }
 
     fetch("http://localhost:5000/mentee/update-profile", {
@@ -191,27 +191,46 @@ function loadRequestedAppointments() {
     const authToken = window.localStorage.getItem("authToken");
     const menteeEmail = window.localStorage.getItem("menteeEmail");
     
+    // Get a reference to the section
+    const requestedSection = document.querySelector('.card:nth-child(2)');
+    
+    // Show debugging info in development
+    console.log("Loading appointments for:", menteeEmail);
+    console.log("Auth token exists:", !!authToken);
+    
     if (!authToken || !menteeEmail) {
-        console.error("Authentication information missing");
+        console.error("Authentication information missing", { authToken: !!authToken, menteeEmail });
+        requestedSection.innerHTML = `
+            <h2>Requested Appointments</h2>
+            <p>Authentication error. Please <a href="mentee-login.html">log in again</a>.</p>
+        `;
         return;
     }
     
-    fetch(`http://localhost:5000/mentee/requested-appointments/${menteeEmail}`, {
-        headers: { Authorization: authToken }
-    })
+    // Show loading state
+    requestedSection.innerHTML = `
+        <h2>Requested Appointments</h2>
+        <p><i class="fas fa-spinner fa-spin"></i> Loading appointment requests...</p>
+    `;
+    
+    // Make the API request
+    fetch(`http://localhost:5000/mentee/requested-appointments/${menteeEmail}`)
     .then(response => {
+        console.log("API response status:", response.status);
         if (!response.ok) {
-            throw new Error('Failed to load appointments');
+            throw new Error(`Server returned ${response.status}: ${response.statusText}`);
         }
         return response.json();
     })
     .then(appointments => {
-        const requestedSection = document.querySelector('.card:nth-child(2)');
+        console.log("Fetched appointments:", appointments);
         
-        if (appointments.length === 0) {
+        if (!appointments || appointments.length === 0) {
+            console.log("No appointments found for", menteeEmail);
             requestedSection.innerHTML = `
                 <h2>Requested Appointments</h2>
-                <p>No appointment requests currently.</p>
+                <p>You have no pending appointment requests.</p>
+                <button onclick="bookNewAppointment()" class="newappointment-btn">Book New Appointment</button>
             `;
             return;
         }
@@ -224,10 +243,11 @@ function loadRequestedAppointments() {
                     <thead>
                         <tr>
                             <th>Mentor</th>
+                            <th>Department</th>
                             <th>Date</th>
                             <th>Time</th>
                             <th>Status</th>
-                            <th>Remarks</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -237,10 +257,15 @@ function loadRequestedAppointments() {
             tableHTML += `
                 <tr>
                     <td>${appointment.mentorName || 'N/A'}</td>
+                    <td>${appointment.mentorDepartment || 'N/A'}</td>
                     <td>${formatDate(appointment.date)}</td>
                     <td>${appointment.time}</td>
                     <td><span class="status ${appointment.status.toLowerCase()}">${appointment.status}</span></td>
-                    <td>${appointment.remarks || 'No remarks'}</td>
+                    <td>
+                        ${appointment.status === 'Pending' ? 
+                          `<button onclick="cancelAppointment('${appointment._id}')" class="secondary-btn small">Cancel</button>` : 
+                          ''}
+                    </td>
                 </tr>
             `;
         });
@@ -249,15 +274,18 @@ function loadRequestedAppointments() {
                     </tbody>
                 </table>
             </div>
+            <button onclick="bookNewAppointment()" class="newappointment-btn">Book New Appointment</button>
         `;
         
         requestedSection.innerHTML = tableHTML;
     })
     .catch(error => {
         console.error("Error loading requested appointments:", error);
-        document.querySelector('.card:nth-child(2)').innerHTML = `
+        requestedSection.innerHTML = `
             <h2>Requested Appointments</h2>
-            <p>Error loading appointment requests. Please try again later.</p>
+            <p>Error loading appointment requests: ${error.message}</p>
+            <button onclick="loadRequestedAppointments()" class="secondary-btn">Try Again</button>
+            <button onclick="bookNewAppointment()" class="newappointment-btn">Book New Appointment</button>
         `;
     });
 }

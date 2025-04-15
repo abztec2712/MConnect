@@ -92,10 +92,26 @@
         </section>
 
         <!-- Appointment Requests -->
-        <section id="appointments" class="card" style="display: none;">
+        <section id="appointments" class="card">
             <h2>Appointment Requests</h2>
-            <ul id="appointment-list"></ul>
-        </section>
+            <div class="appointment-section">
+              <table class="appointment-table">
+                <thead>
+                  <tr>
+                    <th>Mentee Name</th>
+                    <th>Email</th>
+                    <th>Note</th>
+                    <th>Status</th>
+                    <th>Remarks</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="appointment-requests-body">
+                  <!-- JS will fill this -->
+                </tbody>
+              </table>
+            </div>
+          </section>
 
         <!-- Scheduled Appointments -->
         <section id="scheduled" class="card" style="display: none;">

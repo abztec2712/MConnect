@@ -315,131 +315,113 @@ body {
     text-align: left;
 }
 
-/* Chatbot Styles */
-.chatbot-button {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    background-color: hsl(180, 100%, 66%)!important; /* Light Blue */
-    color: rgb(0, 0, 0)!important;
-    border: none;
-    border-radius: 50%;
-    width: 60px;
-    height: 60px;
-    font-size: 24px;
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    transition: all 0.3s ease;
-    z-index: 1000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .chatbot-button:hover {
-    transform: scale(1.1);
-    background-color: var(--primary-dark);
-  }
-  
-  .chatbot-modal {
-    display: none;
-    position: fixed;
-    bottom: 10px!important;
-    right: 50px!important;
-    width: 40%!important;
-    height: 85%!important;
-    background-color: black;
-    border-radius: 15px;
-    box-shadow: 0 4px 20px rgba(255, 255, 255, 0.4);
-    z-index: 1000;
-  }
-  
-  .chatbot-content {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-  }
-  
-  .chatbot-header {
-    padding: 15px;
-    background: linear-gradient(45deg, #02e9e9, #eb02eb);
-    -webkit-text-fill-color: black;   
-    border-top-left-radius: 15px;
-    border-top-right-radius: 15px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .close-button {
-    background: none;
-    border: none;
-    color: var(--light-text);
-    font-size: 24px;
-    cursor: pointer;
-    opacity: 0.8;
-    transition: opacity 0.3s ease;
-  }
-  
-  .close-button:hover {
-    opacity: 1;
-  }
-  
-  .chatbot-messages {
-    flex-grow: 1;
-    padding: 15px;
-    overflow-y: auto;
-    color: #eb02eb !important;
-  }
-  
-  .message {
-    margin-bottom: 10px;
-    padding: 10px;
-    border-radius: 10px;
-    max-width: 80%;
-  }
-  
-  .user-message {
-    background-color: rgba(255, 255, 255, 0.932);
-    margin-left: auto;
-    color: black;
-  }
-  
-  .bot-message {
-    background-color: rgb(99, 99, 99);
-    color: var(--light-text);
-  }
-  
-  .chatbot-input {
-    padding: 15px;
-    border-top: 1px solid var(--hover-bg);
-    display: flex;
-    gap: 10px;
-  }
-  
-  .chatbot-input input {
-    flex-grow: 1;
-    padding: 8px;
-    border: 1px solid var(--hover-bg);
-    border-radius: 4px;
-    background-color: var(--darker-bg);
-    color: var(--light-text);
-  }
-  
-  .chatbot-input input::placeholder {
-    color: var(--gray-text);
-  }
-  
-  .chatbot-input button {
-    padding: 8px 16px;
-    background-color: rgba(255, 255, 255, 0.91);
-    color: black !important;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .chatbot-input button:hover {
-    background-color: rgba(255, 4, 247, 0.9);
-  }
+.appointment-section {
+  margin: 2rem auto;
+  padding: 1rem;
+  max-width: 1000px;
+  background: #f9fafb;
+  border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  overflow-x: auto;
+}
+
+.appointment-section h2 {
+  text-align: center;
+  margin-bottom: 1rem;
+  color: #333;
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+.appointment-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.appointment-table th,
+.appointment-table td {
+  padding: 0.9rem 1.2rem;
+  text-align: left;
+  border-bottom: 1px solid #e5e7eb;
+  color: #333;
+  font-size: 0.95rem;
+}
+
+.appointment-table th {
+  background-color: #4f46e5;
+  color: white;
+  font-weight: 600;
+}
+
+.appointment-table tr:hover {
+  background-color: #f3f4f6;
+}
+
+.status-badge {
+  padding: 0.3rem 0.6rem;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 0.85rem;
+  text-transform: capitalize;
+}
+
+.status-confirmed {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.status-pending {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.status-rejected {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.action-buttons button {
+  padding: 0.4rem 0.8rem;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.action-buttons .accept {
+  background-color: #10b981;
+  color: white;
+}
+
+.action-buttons .accept:hover {
+  background-color: #059669;
+}
+
+.action-buttons .reject {
+  background-color: #ef4444;
+  color: white;
+}
+
+.action-buttons .reject:hover {
+  background-color: #b91c1c;
+}
+
+textarea.remarks {
+  width: 100%;
+  min-height: 60px;
+  padding: 0.6rem;
+  margin-top: 0.4rem;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  font-size: 0.9rem;
+  resize: vertical;
+}
