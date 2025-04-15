@@ -249,58 +249,6 @@ app.get("/get-scheduled-appointments/:email", async (req, res) => {
 // ✅ Start Server
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
 
-// ✅ Mentee Schema
-const MenteeSchema = new mongoose.Schema({
-    name: String,
-    email: { type: String, unique: true },
-    password: String
-});
-const Mentee = mongoose.model("Mentee", MenteeSchema);
-
-// ✅ Mentee Signup Route
-app.post("/mentee/signup", async (req, res) => {
-    try {
-        const { name, email, password } = req.body;
-
-        const existingMentee = await Mentee.findOne({ email });
-        if (existingMentee) {
-            return res.status(400).json({ message: "Mentee already exists" });
-        }
-
-        const hashedPassword = await bcrypt.hash(password, 10);
-        const newMentee = new Mentee({ name, email, password: hashedPassword });
-
-        await newMentee.save();
-        res.status(201).json({ message: "Mentee registered successfully!" });
-
-    } catch (error) {
-        res.status(500).json({ message: "Error registering mentee", details: error.message });
-    }
-});
-
-// ✅ Mentee Login Route
-app.post("/mentee/login", async (req, res) => {
-    try {
-        const { email, password } = req.body;
-
-        const mentee = await Mentee.findOne({ email });
-        if (!mentee) {
-            return res.status(400).json({ message: "Mentee not found" });
-        }
-
-        const isMatch = await bcrypt.compare(password, mentee.password);
-        if (!isMatch) {
-            return res.status(400).json({ message: "Invalid credentials" });
-        }
-
-        const token = jwt.sign({ id: mentee._id }, process.env.SECRET_KEY, { expiresIn: "1h" });
-        res.json({ message: "Login successful", token });
-
-    } catch (error) {
-        res.status(500).json({ message: "Error logging in", details: error.message });
-    }
-});
-
 // ✅ Protected Mentor Dashboard Route
 app.get("/mentee-dashboard", verifyToken, async (req, res) => {
     try {
@@ -348,3 +296,189 @@ app.get("/get-all-mentors", async (req, res) => {
         res.status(500).json({ error: "Error fetching mentors", details: error.message });
     }
 });
+
+// ✅ Mentee Schema
+const MenteeSchema = new mongoose.Schema({
+    name: String,
+    email: { type: String, unique: true },
+    password: String,
+    registrationNumber: String,
+    department: String,
+    section: String,
+    phone: String,
+    photo: String
+});
+const Mentee = mongoose.model("Mentee", MenteeSchema);
+
+// ✅ Mentee Signup Route
+app.post("/mentee/signup", async (req, res) => {
+    try {
+        const { name, email, password } = req.body;
+
+        const existingMentee = await Mentee.findOne({ email });
+        if (existingMentee) {
+            return res.status(400).json({ message: "Mentee already exists" });
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const newMentee = new Mentee({ name, email, password: hashedPassword });
+
+        await newMentee.save();
+        res.status(201).json({ message: "Mentee registered successfully!" });
+
+    } catch (error) {
+        res.status(500).json({ message: "Error registering mentee", details: error.message });
+    }
+});
+
+// ✅ Mentee Login Route
+app.post("/mentee/login", async (req, res) => {
+    try {
+        const { email, password } = req.body;
+
+        const mentee = await Mentee.findOne({ email });
+        if (!mentee) {
+            return res.status(400).json({ message: "Mentee not found" });
+        }
+
+        const isMatch = await bcrypt.compare(password, mentee.password);
+        if (!isMatch) {
+            return res.status(400).json({ message: "Invalid credentials" });
+        }
+
+        const token = jwt.sign({ id: mentee._id }, process.env.SECRET_KEY, { expiresIn: "1h" });
+        res.json({ message: "Login successful", token });
+
+    } catch (error) {
+        res.status(500).json({ message: "Error logging in", details: error.message });
+    }
+});
+
+// ✅ Get Mentee Profile
+app.get("/mentee/profile", verifyToken, async (req, res) => {
+    try {
+        const mentee = await Mentee.findById(req.userId).select("-password");
+        if (!mentee) {
+            return res.status(404).json({ error: "Mentee not found" });
+        }
+        res.json(mentee);
+    } catch (error) {
+        res.status(500).json({ error: "Error retrieving mentee profile", details: error.message });
+    }
+});
+
+// ✅ Update Mentee Profile
+app.post("/mentee/update-profile", verifyToken, async (req, res) => {
+    try {
+        const { name, registrationNumber, department, section, phone, email } = req.body;
+        
+        const mentee = await Mentee.findById(req.userId);
+        if (!mentee) {
+            return res.status(404).json({ error: "Mentee not found" });
+        }
+
+        // Update fields if provided
+        if (name) mentee.name = name;
+        if (registrationNumber) mentee.registrationNumber = registrationNumber;
+        if (department) mentee.department = department;
+        if (section) mentee.section = section;
+        if (phone) mentee.phone = phone;
+        if (email && email !== mentee.email) {
+            // Check if email already exists
+            const emailExists = await Mentee.findOne({ email });
+            if (emailExists) {
+                return res.status(400).json({ error: "Email already in use" });
+            }
+            mentee.email = email;
+        }
+
+        await mentee.save();
+        res.json({ message: "Profile updated successfully", mentee });
+    } catch (error) {
+        res.status(500).json({ error: "Error updating profile", details: error.message });
+    }
+});
+
+// ✅ Get Requested Appointments (Pending or Rejected)
+app.get("/mentee/requested-appointments/:email", async (req, res) => {
+    try {
+        const { email } = req.params;
+        
+        // Find all appointments for this mentee that are pending or rejected
+        const appointments = await Appointment.find({
+            studentEmail: email,
+            status: { $in: ["Pending", "Rejected"] }
+        }).sort({ date: 1, time: 1 });
+        
+        // Enhance appointment data with mentor details
+        const enhancedAppointments = await Promise.all(appointments.map(async (appointment) => {
+            const mentor = await Mentor.findOne({ email: appointment.mentorEmail });
+            return {
+                ...appointment._doc,
+                mentorName: mentor ? mentor.name : "Unknown Mentor",
+                mentorDepartment: mentor ? mentor.department : "",
+                mentorSpecialty: mentor ? mentor.specialty : ""
+            };
+        }));
+        
+        res.json(enhancedAppointments);
+    } catch (error) {
+        res.status(500).json({ error: "Error fetching requested appointments", details: error.message });
+    }
+});
+
+// ✅ Get Scheduled (Confirmed) Appointments
+app.get("/mentee/scheduled-appointments/:email", async (req, res) => {
+    try {
+        const { email } = req.params;
+        
+        // Find all confirmed appointments for this mentee
+        const appointments = await Appointment.find({
+            studentEmail: email,
+            status: "Confirmed"
+        }).sort({ date: 1, time: 1 });
+        
+        // Enhance appointment data with mentor details
+        const enhancedAppointments = await Promise.all(appointments.map(async (appointment) => {
+            const mentor = await Mentor.findOne({ email: appointment.mentorEmail });
+            return {
+                ...appointment._doc,
+                mentorName: mentor ? mentor.name : "Unknown Mentor",
+                mentorDepartment: mentor ? mentor.department : "",
+                mentorSpecialty: mentor ? mentor.specialty : "",
+                mentorEmail: mentor ? mentor.email : ""
+            };
+        }));
+        
+        res.json(enhancedAppointments);
+    } catch (error) {
+        res.status(500).json({ error: "Error fetching scheduled appointments", details: error.message });
+    }
+});
+
+// ✅ Cancel Appointment
+app.post("/mentee/cancel-appointment/:id", verifyToken, async (req, res) => {
+    try {
+        const { id } = req.params;
+        
+        const appointment = await Appointment.findById(id);
+        if (!appointment) {
+            return res.status(404).json({ error: "Appointment not found" });
+        }
+        
+        // Verify that the mentee is the one who made this appointment
+        const mentee = await Mentee.findById(req.userId);
+        if (!mentee || appointment.studentEmail !== mentee.email) {
+            return res.status(403).json({ error: "Unauthorized to cancel this appointment" });
+        }
+        
+        // Update the appointment status to Cancelled
+        appointment.status = "Cancelled";
+        await appointment.save();
+        
+        res.json({ message: "Appointment cancelled successfully" });
+    } catch (error) {
+        res.status(500).json({ error: "Error cancelling appointment", details: error.message });
+    }
+});
+

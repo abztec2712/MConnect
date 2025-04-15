@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MConnect - Book an Appointment</title>
+    <link rel="stylesheet" href="appointment.css">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <img src="Images\MConnect.jpg" class="logo">
+        <ul class="nav-links">
+            <h2>MConnect</h2>
+        </ul>
+        <button class="logout-btn" onclick="logout()">Logout</button>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="card">
+            <h2>Book an Appointment</h2>
+            
+            <!-- Mentor Selection Section -->
+            <div class="mentor-selection">
+                <h3>Select a Mentor</h3>
+                <div class="search-filter">
+                    <input type="text" id="search-mentor" placeholder="Search by name, department, or specialty">
+                    <select id="department-filter">
+                        <option value="">All Departments</option>
+                        <!-- Will be populated dynamically -->
+                    </select>
+                    <select id="specialty-filter">
+                        <option value="">All Specialties</option>
+                        <!-- Will be populated dynamically -->
+                    </select>
+                    <button class="primary-btn" onclick="filterMentors()">Filter</button>
+                </div>
+                
+                <div class="mentors-grid" id="mentors-list">
+                    <!-- Will be populated dynamically -->
+                </div>
+            </div>
+            
+            <!-- Selected Mentor Details -->
+            <div class="selected-mentor" id="selected-mentor-section" style="display: none;">
+                <h3>Selected Mentor</h3>
+                <div class="mentor-profile">
+                    <img id="mentor-photo" src="" alt="Mentor Photo" class="mentor-photo">
+                    <div class="mentor-info">
+                        <h4 id="mentor-name"></h4>
+                        <p id="mentor-department"></p>
+                        <p id="mentor-specialty"></p>
+                        <p id="mentor-position"></p>
+                    </div>
+                </div>
+                <button class="secondary-btn" onclick="backToMentorSelection()">Change Mentor</button>
+            </div>
+            
+            <!-- Appointment Scheduling -->
+            <div class="appointment-scheduling" id="appointment-section" style="display: none;">
+                <h3>Schedule Your Appointment</h3>
+                
+                <!-- Calendar for date selection -->
+                <div class="calendar-container">
+                    <div class="calendar-header">
+                        <button id="prev-month"><i class="fas fa-chevron-left"></i></button>
+                        <h4 id="current-month">April 2025</h4>
+                        <button id="next-month"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                    <div class="weekdays">
+                        <div>Sun</div>
+                        <div>Mon</div>
+                        <div>Tue</div>
+                        <div>Wed</div>
+                        <div>Thu</div>
+                        <div>Fri</div>
+                        <div>Sat</div>
+                    </div>
+                    <div class="calendar-grid" id="calendar-days">
+                        <!-- Will be populated dynamically -->
+                    </div>
+                </div>
+                
+                <!-- Available time slots -->
+                <div class="time-slots-container" id="time-slots-section" style="display: none;">
+                    <h4>Available Time Slots for <span id="selected-date"></span></h4>
+                    <div class="time-slots" id="available-slots">
+                        <!-- Will be populated dynamically -->
+                    </div>
+                </div>
+                
+                <!-- Appointment Confirmation -->
+                <div class="appointment-confirmation" id="confirmation-section" style="display: none;">
+                    <h4>Confirm Your Appointment</h4>
+                    <div class="appointment-details">
+                        <p><strong>Mentor:</strong> <span id="confirm-mentor"></span></p>
+                        <p><strong>Date:</strong> <span id="confirm-date"></span></p>
+                        <p><strong>Time:</strong> <span id="confirm-time"></span></p>
+                    </div>
+                    <div class="appointment-form">
+                        <div class="form-group">
+                            <label for="mentee-name">Your Name:</label>
+                            <input type="text" id="mentee-name" placeholder="Enter your name">
+                        </div>
+                        <div class="form-group">
+                            <label for="mentee-email">Your Email:</label>
+                            <input type="email" id="mentee-email" placeholder="Enter your email">
+                        </div>
+                        <div class="form-group">
+                            <label for="appointment-notes">Notes (Optional):</label>
+                            <textarea id="appointment-notes" placeholder="Any specific topics you'd like to discuss?"></textarea>
+                        </div>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="cancel-btn" onclick="backToTimeSelection()">Back</button>
+                        <button class="primary-btn" onclick="submitAppointment()">Request Appointment</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Success Message -->
+            <div class="success-message" id="success-section" style="display: none;">
+                <i class="fas fa-check-circle success-icon"></i>
+                <h3>Appointment Request Sent!</h3>
+                <p>Your appointment request has been sent to the mentor. You will receive a confirmation email once the mentor accepts your request.</p>
+                <button class="primary-btn" onclick="bookAnotherAppointment()">Book Another Appointment</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="appointment.js"></script>
+</body>
+</html>

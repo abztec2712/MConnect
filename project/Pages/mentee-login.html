@@ -39,7 +39,9 @@
         const data = await response.json();
 
         if (response.ok) {
+          const email = document.getElementById("email").value;
           window.localStorage.setItem("authToken", data.token);
+          window.localStorage.setItem("menteeEmail", email);
           alert("Login successful!");
           window.location.href = "mentee-dashboard.html";
         } else {

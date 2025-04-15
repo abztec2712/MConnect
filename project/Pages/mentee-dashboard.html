@@ -6,39 +6,66 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mentee Dashboard</title>
     <link rel="stylesheet" href="mentor-dashboard.css">
-    <link rel="shortcut icon" href="images/favicon.png" type="image/x-icon">
     <link rel="stylesheet" href="style.css">
     <script src="script.js" type="module"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://kit.fontawesome.com/5dbdfc7f6d.js" crossorigin="anonymous"></script>
 
 </head>
-<body>
+<body onload="loadProfile()">
+    
+<!-- Nav Bar -->
     <nav class="navbar">
-        <img src="Images\MConnect.jpg" class="logo">
+        <img src="Images/MConnect.jpg"  onclick="location.href='../index.html'" class="logo">
         <ul class="nav-links">
-            
             <h2>Welcome Mentee</h2>
-            
         </ul>
-        <button onclick="location.href='../index.html'" class="logout-btn" >Logout</button>
+        <div class="nav-buttons">
+            <button onclick="location.href='../index.html'" class="logout-btn">Logout</button>
+        </div>
     </nav>
 
     <div class="container">
-       
-        <section class="card">
-            <h2>Appointment Requests</h2>
-            <p>No new appointment requests.</p>
-        </section>
+        <!-- Mentee Profile Section -->
+        <section id="profile" class="card">
+            <h2>Mentee Profile</h2>
+            <div id="profile-view">
+                <img id="mentee-photo" src="Images/default-avatar.png" alt="Mentee Photo">
+                <div class="profile-details">
+                    <img id="mentee-photo" src="" alt="Mentee Photo">
+                    <p><strong>Name:</strong> <span id="mentee-name">N/A</span></p>
+                    <p><strong>Registration No.:</strong> <span id="mentee-registrationNumber">N/A</span></p>
+                    <p><strong>Department:</strong> <span id="mentee-department">N/A</span></p>
+                    <p><strong>Section:</strong> <span id="mentee-section">N/A</span></p>
+                    <p><strong>Phone:</strong> <span id="mentee-phone">N/A</span></p>
+                    <p><strong>Email:</strong> <span id="mentee-email">N/A</span></p>
+                    <button class="primary-btn" onclick="editProfile()">Edit Profile</button>
+                </div>
 
+            <!-- Profile Edit Form -->
+            <div id="profile-edit" style="display: none;">
+                <input type="file" id="photo">
+                <input type="text" id="name" placeholder="Name">
+                <input type="text" id="registrationNumber" placeholder="Registration number">
+                <input type="text" id="department" placeholder="Department">
+                <input type="text" id="section" placeholder="Section">
+                <input type="text" id="phone" placeholder="Phone Number">
+                <input type="email" id="email" placeholder="College Email">
+                <button class="primary-btn" onclick="saveProfile()">Save</button>
+            </div>
+        </section>
+                
+        <!-- Requested Appointments Section -->
+        <section class="card">
+            <h2>Requested Appointments</h2>
+            <p>Loading appointment requests...</p>
+        </section>
+        
+        <!-- Scheduled Appointments Section -->
         <section class="card">
             <h2>Scheduled Appointments</h2>
-
-        </section>
-
-        <section class="card">
-            <h2>Profile</h2>
-            <p>Edit your personal details and preferences here.</p>
-            <button class="primary-btn">Edit Profile</button>
+            <p>Loading scheduled appointments...</p>
         </section>
     </div>
 
@@ -63,6 +90,6 @@
             </div>
         </div>
     </div>
-
+    <script src="mentee-dashboard.js" type="module"></script>
 </body>
 </html>

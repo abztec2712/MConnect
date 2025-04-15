@@ -18,11 +18,18 @@ function loadMentors() {
     const mentorsList = document.getElementById('mentors-list');
     mentorsList.innerHTML = '<div class="loading">Loading mentors...</div>';
     
-    axios.get('http://localhost:5000/get-all-mentors')
+    // Using try-catch to handle any fetch errors
+    fetch('http://localhost:5000/get-all-mentors')
         .then(response => {
-            if (response.data && response.data.length > 0) {
-                displayMentors(response.data);
-                populateFilters(response.data);
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data && data.length > 0) {
+                displayMentors(data);
+                populateFilters(data);
             } else {
                 mentorsList.innerHTML = '<div class="no-results">No mentors found. Check back later!</div>';
             }
@@ -30,6 +37,9 @@ function loadMentors() {
         .catch(error => {
             console.error('Error loading mentors:', error);
             mentorsList.innerHTML = '<div class="no-results">Error loading mentors. Please try again later.</div>';
+            
+            // For development purposes, show more error details in console
+            console.log('Error details:', error);
         });
 }
 
@@ -116,20 +126,23 @@ function searchMentors() {
     mentorsList.innerHTML = '<div class="loading">Searching...</div>';
     
     // Prepare search parameters
-    const params = {};
-    if (searchInput) params.search = searchInput;
-    if (departmentFilter) params.department = departmentFilter;
-    if (specialtyFilter) params.specialty = specialtyFilter;
-    
-    // Convert params object to query string
-    const queryString = Object.keys(params)
-        .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
-        .join('&');
+    const params = new URLSearchParams();
+    if (searchInput) params.append('search', searchInput);
+    if (departmentFilter) params.append('department', departmentFilter);
+    if (specialtyFilter) params.append('specialty', specialtyFilter);
     
     // Make API request with search parameters
-    axios.get(`http://localhost:5000/get-all-mentors${queryString ? '?' + queryString : ''}`)
+    const url = `http://localhost:5000/get-all-mentors${params.toString() ? '?' + params.toString() : ''}`;
+    
+    fetch(url)
         .then(response => {
-            displayMentors(response.data);
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            displayMentors(data);
         })
         .catch(error => {
             console.error('Error searching mentors:', error);

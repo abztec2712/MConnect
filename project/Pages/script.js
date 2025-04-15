@@ -54,12 +54,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 const botResponse = await getGeminiResponse(userMessage);
                 updateMessage(loadingId, 'bot', botResponse);
 
-                messageCount++;
+                /*messageCount++;
                 if (messageCount % 3 === 0) {
                     setTimeout(() => {
                         addMessage('bot', 'Are you satisfied with the responses? If not, you can book a session with a mentor here: [Book Appointment](#)');
                     }, 1000);
-                }
+                }*/
 
             } catch (error) {
                 updateMessage(loadingId, 'bot', "Sorry, I couldn't process that request. Please try again.");
@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({ 
-                    message: `You are MConnect, an expert student mentor. Keep your answers short and relevant. If a user asks about booking an appointment, reply with "You can book an appointment with a mentor here: <a href='mentor-dashboard.html' target='_blank'>Book Appointment</a>". Now respond to: "${userMessage}"`
+                    message: `You are MConnect, an expert student mentor. Keep your answers neither too long nor too short and always relevant. If a user asks about booking an appointment, reply with "You can book an appointment with a mentor here: <a href='appointment.html' target='_blank'>Book Appointment</a>". Now respond to: "${userMessage}"`
                 })
             });
 

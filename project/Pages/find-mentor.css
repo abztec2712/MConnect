@@ -18,7 +18,7 @@
 
 body {
     font-family: "Times New Roman", serif;
-    font-weight: 400;
+    font-weight: 400!important;
     font-style: normal;
     font-size: 16px;
     line-height: 1.6;
@@ -112,6 +112,8 @@ h1 {
     text-align: center;
     margin-bottom: 2rem;
     font-size: 3rem;
+    margin-top: auto;
+    align-items: top;
     background: linear-gradient(45deg, #00ffff, #ff00ff);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
