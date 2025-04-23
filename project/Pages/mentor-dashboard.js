@@ -452,8 +452,9 @@ function loadAppointments() {
 
 function updateAppointmentStatus(appointmentId, status) {
     const remarks = document.getElementById(`remarks-${appointmentId}`).value;
+    const baseUrl = "http://localhost:5000"; // Add this line
 
-    axios.post("/update-appointment-status", {
+    axios.post(`${baseUrl}/update-appointment-status`, {
         appointmentId,
         status,
         remarks
